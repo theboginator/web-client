@@ -1,3 +1,5 @@
+import { Box, HStack, Text } from "@chakra-ui/layout";
+import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import Badge from "components/badges/Badge";
 import Loading from "components/ui/Loading";
 import UserLink from "components/users/Link";
@@ -12,23 +14,27 @@ const RecentActivityWidget = () => {
 
     if (!auditLog) return <Loading />
 
-    return <article className="card">
-        <h4>Recent activity</h4>
+    return    <Box as='article' borderWidth="1px" borderRadius="lg" overflow="hidden" p='5'>
+    <HStack mb='4'>
+        <Text fontSize='md' fontWeight='bold'>Recent activity</Text>
+    </HStack>
 
-        <table>
-            <thead>
-                <th>Action</th>
-                <th>User</th>
-            </thead>
-            <tbody>
-                {auditLog.map(log => <tr>
-                    <td><Badge>{log.action}</Badge></td>
-                    <td>{log.user_name ?
-                        <UserLink userId={log.user_id}>{log.user_name}</UserLink> : '-'}</td>
-                </tr>)}
-            </tbody>
-        </table>
-    </article>
+        <Table>
+            <Thead>
+                <Tr>
+                    <Th>Action</Th>
+                    <Th>User</Th>
+                </Tr>
+            </Thead>
+            <Tbody>
+                {auditLog.map(log => <Tr>
+                    <Td><Badge>{log.action}</Badge></Td>
+                    <Td>{log.user_name ?
+                        <UserLink userId={log.user_id}>{log.user_name}</UserLink> : '-'}</Td>
+                </Tr>)}
+            </Tbody>
+        </Table>
+    </Box>
 }
 
 export default RecentActivityWidget;

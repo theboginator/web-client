@@ -1,3 +1,4 @@
+import { Box, Center, HStack, Text } from "@chakra-ui/layout";
 import useFetch from "hooks/useFetch";
 import { Pie, PieChart } from "recharts";
 import widgetIsVisible from "services/widgets";
@@ -9,8 +10,11 @@ const VulnerabilitiesByCategoryStatsWidget = () => {
     if (!visible) return null;
 
     return (
-        <article className='card justify-center items-center'>
-            <h4>Vulnerabilities by category</h4>
+        <Box as='article' borderWidth="1px" borderRadius="lg" overflow="hidden" p='5'>
+        <HStack mb='4'>
+            <Text fontSize='md' fontWeight='bold'>Vulnerabilities by category</Text>
+        </HStack>
+        <Center>           
             <PieChart width={320} height={320}>
                 <Pie
                     data={vulnerabilitiesByCategoryStats}
@@ -29,7 +33,8 @@ const VulnerabilitiesByCategoryStatsWidget = () => {
                 >
                 </Pie>
             </PieChart>
-        </article>
+        </Center>
+        </Box>
     )
 }
 

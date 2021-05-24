@@ -1,13 +1,15 @@
+import { Link, Text } from '@chakra-ui/layout';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {Link as ReachLink} from 'react-router-dom';
 import {IconUser} from '../ui/Icons';
 import './Link.css';
 
 const UserLink = ({userId, children}) => {
-    return <Link className="UserLink" to={`/users/${userId}`}>
-        <IconUser styling={{color: 'var(--text-color)'}}/>
-        {children}
-    </Link>
+    return <Link as={ReachLink} to={`/users/${userId}`} display='flex' color='blue.400'>
+    <IconUser  styling={{ width: '16px'}}/>
+    <Text fontSize='sm' ml='2' fontWeight='bold'>{children}</Text>
+</Link>
+    
 }
 
 UserLink.propTypes = {

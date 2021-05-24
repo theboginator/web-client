@@ -1,4 +1,6 @@
-import { Grid } from '@chakra-ui/layout';
+import { FormControl, FormLabel } from '@chakra-ui/form-control';
+import { Box, Grid,  Text } from '@chakra-ui/layout';
+import { Switch } from '@chakra-ui/switch';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/tabs';
 import Loading from 'components/ui/Loading';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -27,6 +29,7 @@ const DashboardPanels = () => {
     const [dashboardConfig, setDashboardConfig] = useState(null);
 
     const onWidgetChange = (ev, widget) => {
+        console.log(ev.target.name) 
         const dashboardConfigCopy = dashboardConfig;
         dashboardConfigCopy[ev.target.name].visible = ev.target.checked;
 
@@ -50,13 +53,12 @@ const DashboardPanels = () => {
 
     return <section>
         <Title type="Home" title="Dashboard" icon={<IconChartBar />} />
-        <Tabs>
-            <TabList>
+        <Tabs colorScheme='red'>
+            <TabList >
                 <Tab>View</Tab>
                 <Tab>Configure</Tab>
-
             </TabList>
-            <TabPanels>
+            <TabPanels >
                 <TabPanel>
                     <Grid templateColumns='repeat(3,1fr)' gap='3'>
                         <MyTasksWidget />
@@ -68,11 +70,21 @@ const DashboardPanels = () => {
                     </Grid>
                 </TabPanel>
                 <TabPanel>
-                    <h4>Select which widgets to present in your dashboard</h4>
-                    <br />
+                <Box as='article' borderWidth="1px" borderRadius="lg" overflow="hidden" p='5'>
+            <Text mb='4' fontSize='md' fontWeight='bold'>Select which widgets to present in your dashboard</Text>
                     {Object.keys(dashboardConfig).map((widgetKey) => {
-                        return <><label><input type="checkbox" name={widgetKey} checked={dashboardConfig[widgetKey].visible} onChange={onWidgetChange} /> {dashboardConfig[widgetKey].title}</label><br /></>
+                        return <>
+                        <FormControl display="flex" alignItems="center" mb='2'>
+                            <Switch colorScheme='red' id={widgetKey} name={widgetKey} 
+                             isChecked={dashboardConfig[widgetKey].visible} 
+                             onChange={onWidgetChange} mr='2'/>
+                            <FormLabel htmlFor={widgetKey} mb="0">
+                                {dashboardConfig[widgetKey].title}
+                            </FormLabel>
+                        </FormControl>
+                        </>
                     })}
+                </Box>
                 </TabPanel>
             </TabPanels>
         </Tabs>
