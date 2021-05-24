@@ -1,7 +1,9 @@
+import { Button } from "@chakra-ui/button";
+import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { Input } from "@chakra-ui/input";
+import {  Text, VStack } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 import { AuthConsumer } from "../../contexts/AuthContext";
-import PrimaryButton from "../ui/buttons/Primary";
-import './Login.scss';
 import LoginContainer from "./LoginContainer";
 
 
@@ -43,24 +45,28 @@ const Login = () => {
         {
             ({ isAuth, login }) => (
                 <LoginContainer>
-                    <section className="loginform">
                         <form onSubmit={ev => handleSubmit(ev, login)}>
-                            <fieldset>
-                                <legend>Login</legend>
-                                <label htmlFor="inputUsername" className="sr-only">Username</label>
-                                <input type="text" id="inputUsername" onChange={handleUsername}
-                                    placeholder="Username"
-                                    required autoFocus />
-                                <label htmlFor="inputPassword" className="sr-only">Password</label>
-                                <input type="password" id="inputPassword" onChange={handlePassword}
-                                    placeholder="Password" required />
-                                <PrimaryButton
-                                    type="submit">{!loading ? "Sign in" : "Processing..."}</PrimaryButton>
-                            </fieldset>
+                                <VStack spacing='5' alignItems='start'>
+
+                                <Text color='gray.200'  fontSize='2xl'>Login</Text>
+                                <FormControl id="inputUsername" >
+                                    <FormLabel>Username</FormLabel>
+                                    <Input  type="text" onChange={handleUsername}
+                                    placeholder="Username" size='lg'
+                                    required focusBorderColor='red.500' autoFocus />
+                                </FormControl>
+                                <FormControl id="inputPassword" >
+                                    <FormLabel>Password</FormLabel>
+                                    <Input focusBorderColor='red.500' type="password" onChange={handlePassword} size='lg'
+                                        placeholder="Password" required />
+                                </FormControl>
+                                <Button isDisabled={credentials.username?.length< 3 || credentials.password?.length < 3} size='lg' width='full' colorScheme='red' type="submit">{!loading ? "Sign in" : "Processing..."}</Button>
+                            
                             {error &&
                                 <p className="loginform__error">{error} </p>}
+                                </VStack>
+
                         </form>
-                    </section>
                 </LoginContainer>
             )
         }

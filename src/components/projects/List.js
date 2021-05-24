@@ -1,14 +1,17 @@
+import { Button, IconButton, ButtonGroup } from '@chakra-ui/button';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Box, HStack,  LinkOverlay, Text } from '@chakra-ui/layout';
+import { Spinner } from '@chakra-ui/spinner';
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import RestrictedComponent from 'components/logic/RestrictedComponent';
+
 import useDelete from '../../hooks/useDelete';
 import useFetch from '../../hooks/useFetch';
 import useSetTitle from '../../hooks/useSetTitle';
 import ClientLink from "../clients/Link";
 import Breadcrumb from '../ui/Breadcrumb';
 import CreateButton from '../ui/buttons/Create';
-import DeleteButton from "../ui/buttons/Delete";
-import LinkButton from "../ui/buttons/Link";
 import { IconFolder } from '../ui/Icons';
-import Loading from '../ui/Loading';
 import NoResults from "../ui/NoResults";
 import Title from '../ui/Title';
 import ProjectBadge from './ProjectBadge';
@@ -23,49 +26,58 @@ const ProjectsList = ({ history }) => {
     }
 
     return <div>
-        <div className='heading'>
+        <HStack justifyContent='space-between' alignItems='center'>
             <Breadcrumb />
             <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
                 <CreateButton onClick={handleCreateProject}> Create Project</CreateButton>
             </RestrictedComponent>
-        </div>
+        </HStack>
         <Title title='Projects' icon={<IconFolder />} />
-        {!projects ? <Loading /> :
-            <table>
-                <thead>
-                    <tr>
-                        <th style={{ width: '190px' }}>Name</th>
-                        <th>Client</th>
-                        <th className='only-desktop'>Description</th>
-                        <th>Rules of engagement</th>
-                        <th>Status</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
+        {!projects ? <Spinner /> :
+            <Table variant='simple'>
+                <Thead>
+                    <Tr>
+                        <Th style={{ width: '190px' }}>Name</Th>
+                        <Th>Client</Th>
+                        <Th className='only-desktop'>Description</Th>
+                        <Th>Rules of engagement</Th>
+                        <Th>Status</Th>
+                        <Th>&nbsp;</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
                     {projects.length === 0 ?
-                        <tr>
-                            <td colSpan="5"><NoResults /></td>
-                        </tr> :
+                        <Tr>
+                            <Td colSpan="5"><NoResults /></Td>
+                        </Tr> :
                         projects.map((project) =>
-                            <tr key={project.id}>
-                                <td>
+                            <Tr key={project.id} color='gray.500'>
+                                <Td>
                                     <ProjectBadge project={project} />
-                                </td>
-                                <td><ClientLink clientId={project.client_id}>{project.client_name}</ClientLink></td>
-                                <td className='only-desktop truncate'>{project.description}</td>
-                                <td>{project.engagement_type ? 'Type: ' + project.engagement_type : '(undefined)'}</td>
-                                <td>{project.archived ? 'Archived' : 'Active'}</td>
-                                <td className='flex justify-end'>
+                                </Td>
+                                <Td><ClientLink clientId={project.client_id}>{project.client_name}</ClientLink></Td>
+                                <Td  maxW='lg' fontSize='sm'>{project.description}</Td>
+                                <Td fontSize='sm'>{project.engagement_type ? 'Type: ' + project.engagement_type : '(undefined)'}</Td>
+                                <Td fontSize='sm'>
+                                     <HStack alignItems='center' >
+                                        <Box rounded='full' w='10px' h='10px' bg={project.archived ?'gray.600':'green.400'} mr='1'/> 
+                                        <Text color={project.archived ?'gray.600':'green.400'}>{project.archived ? 'Archived' :'Active'}</Text>
+                                    </HStack>
+                                </Td>
+                                <Td className='flex justify-end'>
                                     <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
-                                        <LinkButton href={`/projects/${project.id}/edit`}>Edit</LinkButton>
-                                        <DeleteButton onClick={() => destroy(project.id)} />
+                                        <ButtonGroup size="sm" isAttached variant="outline">
+                                            <Button mr="-px">
+                                                <LinkOverlay href={`/projects/${project.id}/edit`}>Edit</LinkOverlay>
+                                            </Button>
+                                            <IconButton aria-label="Delete" icon={<DeleteIcon />} onClick={() => destroy(project.id)}/>
+                                        </ButtonGroup>
                                     </RestrictedComponent>
-                                </td>
-                            </tr>
+                                </Td>
+                            </Tr>
                         )}
-                </tbody>
-            </table>
+                </Tbody>
+            </Table>
         }
     </div>
 }

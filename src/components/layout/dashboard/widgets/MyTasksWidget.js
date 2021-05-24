@@ -1,3 +1,5 @@
+import { Badge, Box, HStack, Text } from "@chakra-ui/layout";
+import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import TaskBadge from "components/tasks/TaskBadge";
 import TaskStatusFormatter from "components/tasks/TaskStatusFormatter";
 import Loading from "components/ui/Loading";
@@ -12,22 +14,27 @@ const MyTasksWidget = () => {
 
     if (!tasks) return <Loading />
 
-    return <article className="card">
-        <h4>My tasks</h4>
+    return <Box as='article' borderWidth="1px" borderRadius="lg" overflow="hidden" p='5'>
+        <HStack mb='4'>
+            <Badge borderRadius="full" px="2" colorScheme="teal"> New </Badge> 
+            <Text fontSize='md' fontWeight='bold'>My tasks</Text>
+        </HStack>
 
-        <table>
-            <thead>
-                <th>Summary</th>
-                <th>Status</th>
-            </thead>
-            <tbody>
-                {tasks.map(task => <tr>
-                    <td><TaskBadge task={task} /></td>
-                    <td><TaskStatusFormatter task={task} /></td>
-                </tr>)}
-            </tbody>
-        </table>
-    </article>
+        <Table variant="simple" >
+            <Thead>
+                <Tr>
+                    <Th>Summary</Th>
+                    <Th>Status</Th>
+                </Tr>
+            </Thead>
+            <Tbody>
+                {tasks.map(task => <Tr>
+                    <Td><TaskBadge task={task} /></Td>
+                    <Td><TaskStatusFormatter task={task} /></Td>
+                </Tr>)}
+            </Tbody>
+        </Table>
+    </Box>
 }
 
 export default MyTasksWidget;

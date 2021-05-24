@@ -1,6 +1,7 @@
 import {useHistory} from 'react-router-dom'
 import {createRef, useCallback, useEffect} from "react";
 import isInputElement from "../../utilities/domUtils";
+import { Input } from "@chakra-ui/input";
 
 const SearchBox = () => {
     const history = useHistory();
@@ -30,7 +31,18 @@ const SearchBox = () => {
         }
     }
 
-    return <input ref={inputRef} type="search" placeholder="Search..." onKeyDown={handleSearchKeyDown}/>
+    return (
+        <Input
+            variant="filled"
+            size="sm"
+            rounded="md"
+            ref={inputRef}
+            type="search"
+            focusBorderColor="red.300"
+            placeholder="Search..."
+            onKeyDown={handleSearchKeyDown}
+        />
+    );
 }
 
 export default SearchBox;

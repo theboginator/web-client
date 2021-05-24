@@ -1,7 +1,8 @@
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import AuthRoutes from 'components/auth/Routes';
 import CommandsRoutes from 'components/commands/Routes';
 import DocumentsRoutes from 'components/documents/Routes';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AuditLogList from "./components/auditlog/List";
 import ClientsRoutes from "./components/clients/Routes";
@@ -23,21 +24,15 @@ import UsersRoutes from "./components/users/Routes";
 import VulnerabilitiesRoutes from "./components/vulnerabilities/Routes";
 import Configuration from './Configuration';
 import { AuthProvider } from './contexts/AuthContext';
-import ThemeContext from './contexts/ThemeContext';
-import setThemeColors from './utilities/setThemeColors';
-
+import theme from './utilities/theme'
 
 const App = () => {
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark')
-    useEffect(() => {
-        localStorage.setItem('theme', theme)
-        setThemeColors(theme)
-    }, [theme])
 
     return (
         <Router basename={Configuration.appBasename}>
-            <AuthProvider>
-                <ThemeContext.Provider value={{ theme, setTheme }}>
+            <ChakraProvider theme={theme}>
+                <ColorModeScript initialColorMode='dark' />
+                <AuthProvider>
                     <Switch>
                         <ProtectedRoute exact path='/' component={Dashboard} />
                         {AuthRoutes.map((value, index) => React.cloneElement(value, { key: index }))}
@@ -71,8 +66,8 @@ const App = () => {
                         <Route component={PageNotFound} />
                     </Switch>
                     <div id="toast"></div>
-                </ThemeContext.Provider>
-            </AuthProvider>
+                </AuthProvider>
+            </ChakraProvider>
         </Router>
     );
 };

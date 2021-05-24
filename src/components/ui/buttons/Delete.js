@@ -1,9 +1,11 @@
+import { Button } from "@chakra-ui/button";
+import { Box } from "@chakra-ui/layout";
 import { IconX } from "../Icons";
-import SecondaryButton from './../buttons/Secondary';
 
-const DeleteButton = (props) => <SecondaryButton onClick={props.onClick} {...props}>
-    <IconX />
+const DeleteButton = (props) => <Button size='xs' variant='outline' onClick={props.onClick} {...props} color='red.400' >
+    <Box w='16px' h='16px' mr='1'><IconX /></Box>
     {props.children || "Delete"}
-</SecondaryButton>
+</Button>
+
 
 export default DeleteButton

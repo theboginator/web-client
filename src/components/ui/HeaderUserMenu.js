@@ -1,48 +1,51 @@
-import RestrictedComponent from 'components/logic/RestrictedComponent'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { AuthConsumer } from '../../contexts/AuthContext'
-import UserAvatar from './../badges/UserAvatar'
-import './HeaderUserMenu.scss'
+import { Avatar } from "@chakra-ui/avatar";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { Divider, Text } from "@chakra-ui/layout";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+import RestrictedComponent from "components/logic/RestrictedComponent";
+import { AuthConsumer } from "contexts/AuthContext";
+import React from "react";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import MD5 from "services/md5";
 
 export default function HeaderUserMenu({ email }) {
-
-    const [showWindow, setShowWindow] = useState(false)
-    const handleShowWindow = () => {
-        setShowWindow(!showWindow)
-        setTimeout(() => {
-            setShowWindow(false)
-        }, 10000)
-    }
+    const user = JSON.parse(localStorage.getItem("user"));
 
     return (
-        <div style={{ position: 'relative' }}>
-            <UserAvatar onClick={handleShowWindow} email={email} />
-            {showWindow && <UserMenu />}
-        </div>
-    )
-}
-
-
-const UserMenu = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    return <AuthConsumer>
-        {({ logout }) =>
-            <div className='HeaderUserMenu'>
-                <h4 style={{ marginTop: 0, padding: 0, color: '#cfcfcf', fontWeight: 'bold' }}>{user.full_name}</h4>
-                <h5>User</h5>
-                <Link to={`/users/${user.id}`}>Your profile</Link>
-                <Link to='/users/preferences'>Preferences</Link>
-                <Link to='/users/password-change'>Change password</Link>
-                <hr style={{ borderColor: 'var(--bg-color)' }} />
-                <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
-                    <h5>Organisation</h5>
-                    <Link to='/organisation'>Settings</Link>
-                    <hr style={{ borderColor: 'var(--bg-color)' }} />
-                </RestrictedComponent>
-                <Link to='/' onClick={logout}>Logout</Link>
-            </div>
-        }
-    </AuthConsumer>
+        <Menu closeOnBlur>
+            <MenuButton rightIcon={<ChevronDownIcon />}>
+                <Avatar
+                name={user?.name} 
+                size={'sm'} 
+                backgroundColor='gray.900'
+                src={`https://www.gravatar.com/avatar/${MD5(email)}?s=200&d=robohash`} />
+            </MenuButton>
+            <AuthConsumer>
+                {({ logout }) => (
+                    <MenuList>
+                        <Text px='3' pb='3' color='gray.500'>{user.full_name}</Text>
+                        <MenuItem>
+                            <Link to={`/users/${user.id}`}>Your profile</Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to="/users/preferences">Preferences</Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to="/users/password-change"> Change password </Link>
+                        </MenuItem>
+                        <RestrictedComponent roles={["administrator", "superuser", "user"]} >
+                            <Text p='3' color='gray.500'>Organisation</Text>
+                            <MenuItem>
+                                <Link to="/organisation">Settings</Link>
+                            </MenuItem>
+                        </RestrictedComponent>
+                        <Divider />
+                        <MenuItem>
+                            <Link to="/" onClick={logout}> Logout </Link>
+                        </MenuItem>
+                    </MenuList>
+                )}
+            </AuthConsumer>
+        </Menu>
+    );
 }

@@ -1,41 +1,19 @@
-const Title = ({type, title, icon}) => {
-    const styles = {
-        container: {
-            margin: 'var(--padding) 0 var(--margin) 0',
-            display: 'flex',
-            alignItems: 'center',
-        },
-        subtitle: {
-            margin: 0,
-            marginBottom: '-6px',
-            color: 'var(--primary-color)'
-        },
-        title: {
-            marginTop: 'var(--space-sm)',
-            color: 'var(--text-color)'
-        },
-        icon: {
-            backgroundColor: 'var(--black)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginRight: 'var(--padding)',
-            width: 'var(--iconSizeLarge)',
-            height: 'var(--iconSizeLarge)',
-            color: 'var(--primary-color)'
-        }
-    }
+import { Box, Heading, HStack, Text, VStack } from "@chakra-ui/layout";
+
+const Title = ({ type, title, icon }) => {
     return (
+        <HStack p="5" spacing="5" alignItems='center'>
+            <Box rounded='full' p='3' color='red.300' w='48px' h='48px' display='flex' alignItems='center' justifyContent='center' bg='gray.900'>{icon && icon}</Box>
+            <VStack  spacing='-1' alignItems='start'>
+                {type && (
+                    <Text color="red.300" isTruncated>
+                        {type}
+                    </Text>
+                )}
+                <Heading as="h2" >{title}</Heading>
+            </VStack>
+        </HStack>
+    );
+};
 
-        <div style={styles.container}>
-            {icon && <figure style={styles.icon}>{icon}</figure>}
-            <div>
-                {type && <p style={styles.subtitle}>{type}</p>}
-                <h2 style={styles.title}>{title}</h2>
-            </div>
-        </div>
-    )
-}
-
-export default Title
+export default Title;

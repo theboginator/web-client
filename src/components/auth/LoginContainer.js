@@ -1,18 +1,21 @@
+import { Box,  Container, Flex, HStack, Text } from "@chakra-ui/layout";
 import Header from "../layout/Header";
-import './LoginContainer.scss';
 
 const LoginContainer = ({ children }) => {
     return (
-        <div className='login__container'>
+        <Flex direction='column' bgColor={"gray.800"} minHeight='100vh' textColor='gray.500'>
             <Header />
-            <div>
-                {children}
-            </div>
-            <footer>
-                Version
-                <strong > {process.env.REACT_APP_VERSION}</strong> ({process.env.REACT_APP_GIT_COMMIT_HASH})
-            </footer>
-        </div>
+            <Container p='5' flex='1' minHeight='full' >
+                 {children} 
+            </Container>
+            <Box p='5'>
+                <HStack spacing='2'> 
+                     <Text>Version </Text>
+                     <Text fontWeight='bold'> {process.env.REACT_APP_VERSION}</Text> 
+                     <Text >({process.env.REACT_APP_GIT_COMMIT_HASH})</Text> 
+                </HStack>
+            </Box>
+        </Flex>
     )
 }
 

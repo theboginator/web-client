@@ -1,3 +1,4 @@
+import { Box, Grid } from "@chakra-ui/layout";
 import { useState } from "react";
 import useSetTitle from "../../../hooks/useSetTitle";
 import Header from "../Header";
@@ -10,12 +11,12 @@ function Dashboard({ children }) {
     return (
         <>
             <Header />
-            <main role="main" className={sidebarCollapsed ? 'collapsed' : ''}>
+            <Grid className={sidebarCollapsed ? 'collapsed' : ''} templateColumns="max-content 1fr" gap={6}>
                 <Sidebar sidebarCollapsed={sidebarCollapsed} setSidebarCollapsed={setSidebarCollapsed} />
-                <div id='content'>
+                <Box flex='1'>
                     {children || <DashboardPanels />}
-                </div>
-            </main>
+                </Box>
+            </Grid>
         </>
     );
 }

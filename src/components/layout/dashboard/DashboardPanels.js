@@ -1,10 +1,9 @@
+import { Grid } from '@chakra-ui/layout';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/tabs';
 import Loading from 'components/ui/Loading';
-import Tab from 'components/ui/Tab';
-import Tabs from 'components/ui/Tabs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { IconChartBar } from "../../ui/Icons";
 import Title from "../../ui/Title";
-import './DashboardPanels.scss';
 import MyTasksWidget from './widgets/MyTasksWidget';
 import PopularCommandsWidget from './widgets/PopularCommandsWidget';
 import RecentActivityWidget from './widgets/RecentActivityWidget';
@@ -52,23 +51,30 @@ const DashboardPanels = () => {
     return <section>
         <Title type="Home" title="Dashboard" icon={<IconChartBar />} />
         <Tabs>
-            <Tab name="View">
-                <div className='dashboard__panels'>
-                    <MyTasksWidget />
-                    <VulnerabilitiesByRiskStatsWidget />
-                    <PopularCommandsWidget />
-                    <VulnerabilitiesByCategoryStatsWidget />
-                    <RecentActivityWidget />
-                    <UserActivityStatsWidget />
-                </div>
-            </Tab>
-            <Tab name="Configure">
-                <h4>Select which widgets to present in your dashboard</h4>
-                <br />
-                {Object.keys(dashboardConfig).map((widgetKey) => {
-                    return <><label><input type="checkbox" name={widgetKey} checked={dashboardConfig[widgetKey].visible} onChange={onWidgetChange} /> {dashboardConfig[widgetKey].title}</label><br /></>
-                })}
-            </Tab>
+            <TabList>
+                <Tab>View</Tab>
+                <Tab>Configure</Tab>
+
+            </TabList>
+            <TabPanels>
+                <TabPanel>
+                    <Grid templateColumns='repeat(3,1fr)' gap='3'>
+                        <MyTasksWidget />
+                        <VulnerabilitiesByRiskStatsWidget />
+                        <PopularCommandsWidget />
+                        <VulnerabilitiesByCategoryStatsWidget />
+                        <RecentActivityWidget />
+                        <UserActivityStatsWidget />
+                    </Grid>
+                </TabPanel>
+                <TabPanel>
+                    <h4>Select which widgets to present in your dashboard</h4>
+                    <br />
+                    {Object.keys(dashboardConfig).map((widgetKey) => {
+                        return <><label><input type="checkbox" name={widgetKey} checked={dashboardConfig[widgetKey].visible} onChange={onWidgetChange} /> {dashboardConfig[widgetKey].title}</label><br /></>
+                    })}
+                </TabPanel>
+            </TabPanels>
         </Tabs>
     </section>
 }
