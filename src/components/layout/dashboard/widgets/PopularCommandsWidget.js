@@ -13,25 +13,43 @@ const PopularCommandsWidget = () => {
 
     if (!commands) return <Loading />
 
-    return   <Box as='article'  borderWidth="1px" borderRadius="lg" overflow="hidden" p='5'>
-                <HStack mb='4'>
-                    <Text fontSize='md' fontWeight='bold'>Popular commands</Text>
-                </HStack>
-                <Table variant='simple'>
-                    <Thead>
+    return (
+        <Box
+            as="article"
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            p="5"
+        >
+            <HStack mb="4">
+                <Text fontSize="md" fontWeight="bold">
+                    Popular commands
+                </Text>
+            </HStack>
+            <Table variant="simple" size={"sm"}>
+                <Thead>
+                    <Tr>
+                        <Th>Short name</Th>
+                        <Th>Description</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {commands.map((command) => (
                         <Tr>
-                            <Th>Short name</Th>
-                            <Th>Description</Th>
+                            <Td>
+                                <CommandBadge command={command}>
+                                    {command.short_name}
+                                </CommandBadge>
+                            </Td>
+                            <Td fontSize="sm" color="gray.500">
+                                {command.description}
+                            </Td>
                         </Tr>
-                    </Thead>
-                    <Tbody>
-                        {commands.map(command => <Tr>
-                            <Td><CommandBadge command={command}>{command.short_name}</CommandBadge></Td>
-                            <Td fontSize='sm' color='gray.500'>{command.description}</Td>
-                        </Tr>)}
-                    </Tbody>
-                </Table>
-            </Box>
+                    ))}
+                </Tbody>
+            </Table>
+        </Box>
+    );
 }
 
 export default PopularCommandsWidget;

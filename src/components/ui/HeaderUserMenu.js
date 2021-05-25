@@ -1,6 +1,6 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Divider, Text } from "@chakra-ui/layout";
+import { Badge, Divider, HStack, Text } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import RestrictedComponent from "components/logic/RestrictedComponent";
 import { AuthConsumer } from "contexts/AuthContext";
@@ -10,7 +10,7 @@ import MD5 from "services/md5";
 
 export default function HeaderUserMenu({ email }) {
     const user = JSON.parse(localStorage.getItem("user"));
-
+console.log(user)
     return (
         <Menu closeOnBlur>
             <MenuButton rightIcon={<ChevronDownIcon />}>
@@ -18,26 +18,30 @@ export default function HeaderUserMenu({ email }) {
                     name={user?.name}
                     size="sm"
                     backgroundColor="gray.700"
-                    
-                    src={`https://www.gravatar.com/avatar/${MD5( email )}?s=200&d=robohash`}
+                    src={`https://www.gravatar.com/avatar/${MD5(
+                        email
+                    )}?s=200&d=robohash`}
                 />
             </MenuButton>
             <AuthConsumer>
                 {({ logout }) => (
                     <MenuList>
-                        <Text px="3" pb="3" color="gray.500">
-                            {user.full_name}
-                        </Text>
+                        <HStack px="3" pb="3" justifyContent='space-between' alignItems='center'>
+
+                            <Text color="gray.500">
+                                {user.full_name}
+                            </Text>
+                            <Badge colorScheme='red'>{user.role}</Badge>
+                        </HStack>
                         <MenuItem>
                             <Link to={`/users/${user.id}`}>Your profile</Link>
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem command="⌘.">
                             <Link to="/users/preferences">Preferences</Link>
                         </MenuItem>
                         <MenuItem>
                             <Link to="/users/password-change">
-                                {" "}
-                                Change password{" "}
+                                Change password
                             </Link>
                         </MenuItem>
                         <RestrictedComponent
@@ -46,15 +50,14 @@ export default function HeaderUserMenu({ email }) {
                             <Text p="3" color="gray.500">
                                 Organisation
                             </Text>
-                            <MenuItem>
+                            <MenuItem command="⌘⇧.">
                                 <Link to="/organisation">Settings</Link>
                             </MenuItem>
                         </RestrictedComponent>
                         <Divider />
-                        <MenuItem>
+                        <MenuItem >
                             <Link to="/" onClick={logout}>
-                                {" "}
-                                Logout{" "}
+                                Logout
                             </Link>
                         </MenuItem>
                     </MenuList>

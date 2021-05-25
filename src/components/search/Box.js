@@ -35,18 +35,22 @@ const SearchBox = () => {
 
     return (
         <InputGroup>
-        <InputLeftElement pointerEvents="none" color="gray.600" children={<SearchIcon />} />
-        <Input
-            variant="filled"
-            ref={inputRef}
-            type="search"
-            focusBorderColor="red.300"
-            placeholder="Search..."
-            onKeyDown={handleSearchKeyDown}
+            <InputLeftElement
+                pointerEvents="none"
+                color="gray.600"
+                children={<SearchIcon />}
             />
-            <InputRightElement children={<Kbd>/</Kbd>}/>
-        
-            </InputGroup>
+            <Input
+                variant="filled"
+                ref={inputRef}
+                type="search"
+                width={["160px", "200px",'260px']}
+                focusBorderColor="red.300"
+                placeholder="Search..."
+                onKeyDown={handleSearchKeyDown}
+            />
+            <InputRightElement display={['none','none','flex']} children={<Kbd>/</Kbd>} />
+        </InputGroup>
     );
 }
 

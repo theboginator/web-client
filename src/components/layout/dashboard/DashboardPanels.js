@@ -51,44 +51,85 @@ const DashboardPanels = () => {
 
     if (dashboardConfig === null) return <Loading />
 
-    return <section>
-        <Title type="Home" title="Dashboard" icon={<IconChartBar />} />
-        <Tabs colorScheme='red'>
-            <TabList >
-                <Tab>View</Tab>
-                <Tab>Configure</Tab>
-            </TabList>
-            <TabPanels >
-                <TabPanel>
-                    <Grid templateColumns='repeat(3,1fr)' gap='3'>
-                        <MyTasksWidget />
-                        <VulnerabilitiesByRiskStatsWidget />
-                        <PopularCommandsWidget />
-                        <VulnerabilitiesByCategoryStatsWidget />
-                        <RecentActivityWidget />
-                        <UserActivityStatsWidget />
-                    </Grid>
-                </TabPanel>
-                <TabPanel>
-                <Box as='article' borderWidth="1px" borderRadius="lg" overflow="hidden" p='5'>
-            <Text mb='4' fontSize='md' fontWeight='bold'>Select which widgets to present in your dashboard</Text>
-                    {Object.keys(dashboardConfig).map((widgetKey) => {
-                        return <>
-                        <FormControl display="flex" alignItems="center" mb='2'>
-                            <Switch colorScheme='red' id={widgetKey} name={widgetKey} 
-                             isChecked={dashboardConfig[widgetKey].visible} 
-                             onChange={onWidgetChange} mr='2'/>
-                            <FormLabel htmlFor={widgetKey} mb="0">
-                                {dashboardConfig[widgetKey].title}
-                            </FormLabel>
-                        </FormControl>
-                        </>
-                    })}
-                </Box>
-                </TabPanel>
-            </TabPanels>
-        </Tabs>
-    </section>
+    return (
+        <section>
+            <Title type="Home" title="Dashboard" icon={<IconChartBar />} />
+            <Tabs colorScheme="red">
+                <TabList>
+                    <Tab>View</Tab>
+                    <Tab>Configure</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <Grid
+                            templateColumns={[
+                                "1fr",
+                                "1fr",
+                                "1fr",
+                                "repeat(2,1fr)",
+                                "repeat(2,1fr)",
+                                "repeat(3,1fr)",
+                            ]}
+                            gap="3"
+                        >
+                            <MyTasksWidget />
+                            <VulnerabilitiesByRiskStatsWidget />
+                            <PopularCommandsWidget />
+                            <VulnerabilitiesByCategoryStatsWidget />
+                            <RecentActivityWidget />
+                            <UserActivityStatsWidget />
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel>
+                        <Box
+                            as="article"
+                            borderWidth="1px"
+                            borderRadius="lg"
+                            overflow="hidden"
+                            p="5"
+                        >
+                            <Text mb="4" fontSize="md" fontWeight="bold">
+                                Select which widgets to present in your
+                                dashboard
+                            </Text>
+                            {Object.keys(dashboardConfig).map((widgetKey) => {
+                                return (
+                                    <>
+                                        <FormControl
+                                            display="flex"
+                                            alignItems="center"
+                                            mb="2"
+                                        >
+                                            <Switch
+                                                colorScheme="red"
+                                                id={widgetKey}
+                                                name={widgetKey}
+                                                isChecked={
+                                                    dashboardConfig[widgetKey]
+                                                        .visible
+                                                }
+                                                onChange={onWidgetChange}
+                                                mr="2"
+                                            />
+                                            <FormLabel
+                                                htmlFor={widgetKey}
+                                                mb="0"
+                                            >
+                                                {
+                                                    dashboardConfig[widgetKey]
+                                                        .title
+                                                }
+                                            </FormLabel>
+                                        </FormControl>
+                                    </>
+                                );
+                            })}
+                        </Box>
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
+        </section>
+    );
 }
 
 export default DashboardPanels;

@@ -14,27 +14,45 @@ const MyTasksWidget = () => {
 
     if (!tasks) return <Loading />
 
-    return <Box as='article' borderWidth="1px" borderRadius="lg" overflow="hidden" p='5'>
-        <HStack mb='4'>
-            <Badge borderRadius="full" px="2" colorScheme="teal"> New </Badge> 
-            <Text fontSize='md' fontWeight='bold'>My tasks</Text>
-        </HStack>
+    return (
+        <Box
+            as="article"
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            p="5"
+        >
+            <HStack mb="4">
+                <Badge borderRadius="full" px="2" colorScheme="teal">
+                    New
+                </Badge>
+                <Text fontSize="md" fontWeight="bold">
+                    My tasks
+                </Text>
+            </HStack>
 
-        <Table variant="simple" >
-            <Thead>
-                <Tr>
-                    <Th>Summary</Th>
-                    <Th>Status</Th>
-                </Tr>
-            </Thead>
-            <Tbody>
-                {tasks.map(task => <Tr>
-                    <Td><TaskBadge task={task} /></Td>
-                    <Td><TaskStatusFormatter task={task} /></Td>
-                </Tr>)}
-            </Tbody>
-        </Table>
-    </Box>
+            <Table variant="simple" size={'sm'}>
+                <Thead>
+                    <Tr>
+                        <Th>Summary</Th>
+                        <Th>Status</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {tasks.map((task) => (
+                        <Tr>
+                            <Td>
+                                <TaskBadge task={task} />
+                            </Td>
+                            <Td>
+                                <TaskStatusFormatter task={task} />
+                            </Td>
+                        </Tr>
+                    ))}
+                </Tbody>
+            </Table>
+        </Box>
+    );
 }
 
 export default MyTasksWidget;
