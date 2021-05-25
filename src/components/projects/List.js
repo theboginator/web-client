@@ -1,6 +1,6 @@
 import { Button, IconButton, ButtonGroup } from '@chakra-ui/button';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import { Box, Center, HStack, LinkOverlay, Text } from "@chakra-ui/layout";
+import { Badge, Box, Center, HStack, LinkOverlay, Text } from "@chakra-ui/layout";
 import { Spinner } from '@chakra-ui/spinner';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import RestrictedComponent from 'components/logic/RestrictedComponent';
@@ -43,7 +43,7 @@ const ProjectsList = ({ history }) => {
                         <Tr>
                             <Th style={{ width: "190px" }}>Name</Th>
                             <Th>Client</Th>
-                            <Th className="only-desktop">Description</Th>
+                            <Th display={{base:'none',"2xl":'table-cell'}}>Description</Th>
                             <Th>Rules of engagement</Th>
                             <Th>Status</Th>
                             <Th>&nbsp;</Th>
@@ -63,16 +63,16 @@ const ProjectsList = ({ history }) => {
                                         <ProjectBadge project={project} />
                                     </Td>
                                     <Td>
-                                        <ClientLink clientId={project.client_id} >
+                                        <ClientLink clientId={project.client_id} size='sm'>
                                             {project.client_name}
                                         </ClientLink>
                                     </Td>
-                                    <Td maxW="lg" fontSize="sm">
+                                    <Td display={{base:'none',"2xl":'table-cell'}} maxW="lg" fontSize={'xs'} >
                                         {project.description}
                                     </Td>
                                     <Td fontSize="sm">
                                         {project.engagement_type
-                                            ? "Type: " + project.engagement_type
+                                            ? <Badge colorScheme='red'>{project.engagement_type}</Badge>
                                             : "(undefined)"}
                                     </Td>
                                     <Td fontSize="sm">

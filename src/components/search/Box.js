@@ -1,7 +1,9 @@
 import {useHistory} from 'react-router-dom'
 import {createRef, useCallback, useEffect} from "react";
 import isInputElement from "../../utilities/domUtils";
-import { Input } from "@chakra-ui/input";
+import { Input, InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/input";
+import { Kbd } from '@chakra-ui/layout';
+import { SearchIcon } from '@chakra-ui/icons';
 
 const SearchBox = () => {
     const history = useHistory();
@@ -32,16 +34,19 @@ const SearchBox = () => {
     }
 
     return (
+        <InputGroup>
+        <InputLeftElement pointerEvents="none" color="gray.600" children={<SearchIcon />} />
         <Input
             variant="filled"
-            size="sm"
-            rounded="md"
             ref={inputRef}
             type="search"
             focusBorderColor="red.300"
             placeholder="Search..."
             onKeyDown={handleSearchKeyDown}
-        />
+            />
+            <InputRightElement children={<Kbd>/</Kbd>}/>
+        
+            </InputGroup>
     );
 }
 

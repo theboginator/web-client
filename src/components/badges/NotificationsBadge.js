@@ -51,19 +51,34 @@ export default function NotificationsBadge() {
     }
 
     return (
-        <Popover placement='bottom-end'>
+        <Popover placement="bottom-end">
             <PopoverTrigger>
-                <Button p='2' size="sm" variant="ghost" aria-label="Notifications" position='relative'>
-                    <BellIcon fontSize='xl' color='gray.600'/>
+                <Button
+                    p="2"
+                    variant="ghost"
+                    aria-label="Notifications"
+                    position="relative"
+                >
+                    <BellIcon fontSize="xl" color="gray.500" />
                     {notifications.length > 0 && (
-                        <Box w='3' h='3' top='-1' right='-1' backgroundColor='red.400' rounded='full' position='absolute' />
+                        <Box
+                            w="3"
+                            h="3"
+                            top="-1"
+                            right="-1"
+                            backgroundColor="red.400"
+                            rounded="full"
+                            position="absolute"
+                        />
                     )}
                 </Button>
             </PopoverTrigger>
             <PopoverContent>
                 <PopoverArrow />
                 <PopoverCloseButton />
-                <PopoverHeader px='3' pb='3' color='gray.500'>Notifications</PopoverHeader>
+                <PopoverHeader px="3" pb="3" color="gray.500">
+                    Notifications
+                </PopoverHeader>
                 <PopoverBody>
                     {notifications.length > 0 ? (
                         <ul>
