@@ -1,13 +1,17 @@
-import { Link, Text } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/button";
+import {  Text } from "@chakra-ui/layout";
 import { IconClipboard } from "components/ui/Icons";
-import { Link as ReachLink } from "react-router-dom";
+import { Link  } from "react-router-dom";
 
 const TaskBadge = ({ task }) => {
     return (
-        <Link as={ReachLink} to={"/tasks/" + task.id} display='flex' color='orange.300'>
-            <IconClipboard  styling={{ width: '16px'}}/>
-            <Text fontSize='sm' ml='2' fontWeight='bold'>{task.summary}</Text>
-        </Link>
+        <Button width='min-content' textAlign='left' variant='ghost' colorScheme='orange' 
+        as={Link} to={"/tasks/" + task.id} 
+        leftIcon={ <IconClipboard  styling={{ width: '24px'}}/>}
+        >
+           
+            <Text fontWeight='bold'>{task.summary}</Text>
+        </Button>
 
     );;
 };

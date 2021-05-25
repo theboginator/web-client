@@ -1,16 +1,15 @@
+import { Button, IconButton } from '@chakra-ui/button';
+import { AddIcon, RepeatIcon } from '@chakra-ui/icons';
+import { Center, HStack } from '@chakra-ui/layout';
+import { Spinner } from '@chakra-ui/spinner';
 import RestrictedComponent from 'components/logic/RestrictedComponent';
-import ButtonGroup from 'components/ui/buttons/ButtonGroup';
 import DeleteButton from 'components/ui/buttons/Delete';
-import ReloadButton from 'components/ui/buttons/Reload';
 import { actionCompletedToast } from 'components/ui/toast';
 import React, { useCallback, useEffect, useState } from 'react';
 import useDelete from '../../hooks/useDelete';
 import secureApiFetch from '../../services/api';
 import Pagination from '../layout/Pagination';
-import Breadcrumb from "../ui/Breadcrumb";
-import CreateButton from '../ui/buttons/Create';
 import { IconFlag } from '../ui/Icons';
-import Loading from '../ui/Loading';
 import Title from '../ui/Title';
 import useSetTitle from './../../hooks/useSetTitle';
 import VulnerabilitiesTable from './VulnerabilitiesTable';
@@ -83,22 +82,22 @@ const VulnerabilitiesList = ({ history }) => {
 
     return (
         <>
-            <div className='heading'>
-                <Breadcrumb />
+            <HStack justifyContent='space-between' alignItems='center'>
                 <Pagination page={apiPageNumber} total={numberPages} handlePrev={handlePrev} handleNext={handleNext} />
-                <ButtonGroup>
-                    <CreateButton onClick={handleCreateVulnerability}>Add vulnerability</CreateButton>
-                    <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
-                        <DeleteButton onClick={onDeleteButtonClick} disabled={!selection.length}>
-                            Delete selected
-                        </DeleteButton>
-                    </RestrictedComponent>
+                <HStack spacing='3'>
+                {selection.length > 0 &&
+                <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
+                    <DeleteButton size='md' onClick={onDeleteButtonClick} disabled={!selection.length}>
+                        Delete selected
+                    </DeleteButton>
+                </RestrictedComponent>}
+                <IconButton variant='outline'  icon={<RepeatIcon />} onClick={reloadVulnerabilities} disabled={reloadButtonDisabled} />
+                <Button size='md' leftIcon={<AddIcon />} variant='outline' colorScheme='purple' onClick={handleCreateVulnerability}>Add vulnerability</Button>
+                </HStack>
 
-                    <ReloadButton onClick={reloadVulnerabilities} disabled={reloadButtonDisabled} />
-                </ButtonGroup>
-            </div>
+            </HStack>
             <Title title='Vulnerabilities' icon={<IconFlag />} />
-            {!vulnerabilities ? <Loading /> :
+            {!vulnerabilities ? <Center><Spinner /></Center> :
                 <VulnerabilitiesTable vulnerabilities={vulnerabilities} selection={selection} setSelection={setSelection} destroy={destroy} />
             }
         </>

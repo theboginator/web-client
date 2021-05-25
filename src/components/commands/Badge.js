@@ -1,15 +1,21 @@
-import { Link, Text } from '@chakra-ui/layout';
-import { Link as ReachLink } from 'react-router-dom'
+import { Button } from '@chakra-ui/button';
+import {  Text } from '@chakra-ui/layout';
+import { Link  } from 'react-router-dom'
 import { IconTerminal } from '../ui/Icons'
 
 const CommandBadge = ({ command }) => {
    
     return (
-        <Link as={ReachLink} to={"/commands/" + command.id} display='flex' color='green.300'>
-            <IconTerminal styling={{ width: '16px'}}/>
-            <Text ml='2' fontWeight='bold'> {command.short_name} </Text>
-        </Link>
-    )
+        <Button width='min-content' textAlign='left' variant='ghost' colorScheme='green' 
+            as={Link}
+            to={"/commands/" + command.id}
+            leftIcon={<IconTerminal styling={{ width: "24px" }} />}
+        >
+            <Text fontWeight="bold">
+                {command.short_name}
+            </Text>
+        </Button>
+    );
 }
 
 export default CommandBadge;

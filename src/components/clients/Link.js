@@ -1,15 +1,18 @@
-import { Link, Text } from "@chakra-ui/layout";
-import { Link  as ReachLink} from "react-router-dom";
+import { Button } from "@chakra-ui/button";
+import {  Text } from "@chakra-ui/layout";
+import { Link  } from "react-router-dom";
 import { IconBriefcase } from "../ui/Icons";
 
 const ClientLink = ({ clientId, children }) => {
    
-    return <Link as={ReachLink} 
-        to={`/clients/${clientId}`} display='flex' color='gray.300'>
-        <IconBriefcase styling={{ width: '16px'}} />
-        <Text fontSize='sm' ml='2' fontWeight='bold'>{children}</Text>
+    return <Button width='min-content' textAlign='left' variant='ghost' colorScheme='linkedin' as={Link} 
+        to={`/clients/${clientId}`} display='flex' 
+        leftIcon={<IconBriefcase styling={{ width: '24px'}} />}
+        >
+        <Text fontWeight="bold">{children}</Text>
 
-    </Link>
+    </Button>
+
 }
 
 export default ClientLink;

@@ -1,3 +1,6 @@
+import { Button, ButtonGroup } from "@chakra-ui/button";
+import { Checkbox } from "@chakra-ui/checkbox";
+import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import RestrictedComponent from "components/logic/RestrictedComponent";
 import React from "react";
 import CvssScore from '../badges/CvssScore';
@@ -5,7 +8,6 @@ import RiskBadge from '../badges/RiskBadge';
 import VulnerabilityBadge from '../badges/VulnerabilityBadge';
 import VulnerabilityCategoryBadge from '../badges/VulnerabilityCategoryBadge';
 import DeleteButton from "../ui/buttons/Delete";
-import LinkButton from "../ui/buttons/Link";
 import NoResults from "../ui/NoResults";
 import VulnerabilityStatusBadge from "./StatusBadge";
 
@@ -24,54 +26,56 @@ const VulnerabilitiesTable = ({ vulnerabilities, selection, setSelection, destro
 
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    {showSelection && <th style={{ width: "32px" }}>&nbsp;</th>}
-                    <th style={{ width: '190px' }}>Summary</th>
-                    <th style={{ width: '120px' }}>Status</th>
-                    <th style={{ width: '120px' }}>Risk</th>
-                    <th style={{ width: '120px' }}><abbr title="Common Vulnerability Scoring System">CVSS</abbr> score</th>
-                    <th className='only-desktop' style={{ width: '20%' }}>Category</th>
-                    <th style={{ width: '15%' }}>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
+        <Table>
+            <Thead>
+                <Tr>
+                    {showSelection && <Th style={{ width: "32px" }}>&nbsp;</Th>}
+                    <Th style={{ width: '190px' }}>Summary</Th>
+                    <Th style={{ width: '120px' }}>Status</Th>
+                    <Th style={{ width: '120px' }}>Risk</Th>
+                    <Th isNumeric style={{ width: '120px' }}><abbr title="Common Vulnerability Scoring System">CVSS</abbr> score</Th>
+                    <Th className='only-desktop' style={{ width: '20%' }}>Category</Th>
+                    <Th style={{ width: '15%' }}>&nbsp;</Th>
+                </Tr>
+            </Thead>
+            <Tbody>
                 {vulnerabilities.length === 0 ?
-                    <tr>
-                        <td colSpan="6"><NoResults /></td>
-                    </tr> :
+                    <Tr>
+                        <Td colSpan="6"><NoResults /></Td>
+                    </Tr> :
                     vulnerabilities.map((vulnerability, index) => {
                         return (
-                            <tr key={index}>
+                            <Tr key={index}>
                                 {showSelection &&
-                                    <td>
-                                        <input
-                                            type="checkbox"
+                                    <Td>
+                                        <Checkbox
+                                        colorScheme='purple'
                                             value={vulnerability.id}
                                             onChange={onSelectionChange}
-                                            checked={selection.includes(vulnerability.id)}
+                                            isChecked={selection.includes(vulnerability.id)}
                                         />
-                                    </td>
+                                    </Td>
                                 }
-                                <td><VulnerabilityBadge vulnerability={vulnerability} /></td>
-                                <td><VulnerabilityStatusBadge vulnerability={vulnerability} /></td>
-                                <td><RiskBadge risk={vulnerability.risk} /></td>
-                                <td><CvssScore score={vulnerability.cvss_score} /></td>
-                                <td className='only-desktop'><VulnerabilityCategoryBadge category={vulnerability.category_name} /></td>
-                                <td className='flex justify-end'>
+                                <Td><VulnerabilityBadge vulnerability={vulnerability} /></Td>
+                                <Td><VulnerabilityStatusBadge vulnerability={vulnerability} /></Td>
+                                <Td><RiskBadge risk={vulnerability.risk} /></Td>
+                                <Td><CvssScore score={vulnerability.cvss_score} /></Td>
+                                <Td className='only-desktop'><VulnerabilityCategoryBadge category={vulnerability.category_name} /></Td>
+                                <Td className='flex justify-end'>
                                     <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
-                                        <LinkButton href={`/vulnerabilities/${vulnerability.id}/edit`}>Edit</LinkButton>
-                                        {destroy &&
-                                            <DeleteButton onClick={() => destroy(vulnerability.id)} />
-                                        }
+                                        <ButtonGroup size='sm' isAttached>
+                                            <Button variant='outline' colorScheme='yellow'  href={`/vulnerabilities/${vulnerability.id}/edit`}>Edit</Button>
+                                            {destroy &&
+                                                <DeleteButton onClick={() => destroy(vulnerability.id)} />
+                                            }
+                                        </ButtonGroup>
                                     </RestrictedComponent>
-                                </td>
-                            </tr>
+                                </Td>
+                            </Tr>
                         )
                     })}
-            </tbody>
-        </table>
+            </Tbody>
+        </Table>
     )
 }
 
