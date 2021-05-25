@@ -1,11 +1,10 @@
-import {IconExclamationCircle} from './Icons'
-import './NoResults.css';
+import { Alert, AlertIcon } from "@chakra-ui/alert";
 
 export default function NoResults() {
     return (
-        <figure className="NoResults message__container">
-            <IconExclamationCircle/>
-            No results
-        </figure>
-    )
+        <Alert status="info">
+                    <AlertIcon />
+                    No results
+            </Alert>
+    );;;
 }

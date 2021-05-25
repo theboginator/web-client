@@ -63,104 +63,200 @@ const VulnerabilityDetails = () => {
 
     if (!vulnerability) return <Loading />
 
-    return <div>
-        <div className='heading'>
-            <Breadcrumb>
-                <Link to="/vulnerabilities">Vulnerabilities</Link>
-            </Breadcrumb>
-            <ButtonGroup>
-                <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
-                    <EditButton onClick={(ev) => {
-                        ev.preventDefault();
-                        history.push(`/vulnerabilities/${vulnerability.id}/edit`)
-                    }}>Edit</EditButton>
+    return (
+        <div>
+            <div className="heading">
+                <Breadcrumb>
+                    <Link to="/vulnerabilities">Vulnerabilities</Link>
+                </Breadcrumb>
+                <ButtonGroup>
+                    <RestrictedComponent
+                        roles={["administrator", "superuser", "user"]}
+                    >
+                        <EditButton
+                            onClick={(ev) => {
+                                ev.preventDefault();
+                                history.push(
+                                    `/vulnerabilities/${vulnerability.id}/edit`
+                                );
+                            }}
+                        >
+                            Edit
+                        </EditButton>
 
-                    <label>Transition to&nbsp;
-                        <select onChange={onStatusChange} value={vulnerability.status + '-' + vulnerability.substatus}>
-                            {VulnerabilityStatuses.map((status, index) =>
-                                <option key={index} value={status.id}>{status.name}</option>
-                            )}
-                        </select>
-                    </label>
+                        <label>
+                            Transition to&nbsp;
+                            <select
+                                onChange={onStatusChange}
+                                value={
+                                    vulnerability.status +
+                                    "-" +
+                                    vulnerability.substatus
+                                }
+                            >
+                                {VulnerabilityStatuses.map((status, index) => (
+                                    <option key={index} value={status.id}>
+                                        {status.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
 
-                    <DeleteButton onClick={handleDelete} />
-                </RestrictedComponent>
-            </ButtonGroup>
+                        <DeleteButton onClick={handleDelete} />
+                    </RestrictedComponent>
+                </ButtonGroup>
+            </div>
+            <article>
+                <Title
+                    type="Vulnerability"
+                    title={vulnerability.summary}
+                    icon={<IconFlag />}
+                />
+
+                <Tabs>
+                    <Tab name="Details">
+                        <div className="grid grid-two">
+                            <div>
+                                <h4>Description</h4>
+                                <ReactMarkdown>
+                                    {vulnerability.description || "_(empty)_"}
+                                </ReactMarkdown>
+                                {vulnerability.solution && (
+                                    <>
+                                        <h4>Solution</h4>
+                                        <ReactMarkdown>
+                                            {vulnerability.solution}
+                                        </ReactMarkdown>
+                                    </>
+                                )}
+
+                                <h4>Proof of concept</h4>
+                                <ReactMarkdown>
+                                    {vulnerability.proof_of_concept ||
+                                        "_(empty)_"}
+                                </ReactMarkdown>
+
+                                <h4>Impact</h4>
+                                <ReactMarkdown>
+                                    {vulnerability.impact || "_(empty)_"}
+                                </ReactMarkdown>
+
+                                <h4>Properties</h4>
+                                <dl>
+                                    <dt>Status</dt>
+                                    <dd>
+                                        <VulnerabilityStatusBadge
+                                            vulnerability={vulnerability}
+                                        />
+                                    </dd>
+
+                                    <dt>Risk</dt>
+                                    <dd>
+                                        <RiskBadge risk={vulnerability.risk} />
+                                    </dd>
+
+                                    <dt>Category</dt>
+                                    <dd>
+                                        {vulnerability.category_name || "-"}
+                                    </dd>
+
+                                    <dt>
+                                        <CvssAbbr /> score
+                                    </dt>
+                                    <dd>
+                                        <CvssScore
+                                            score={vulnerability.cvss_score}
+                                        />
+                                    </dd>
+
+                                    <dt>CVSS vector</dt>
+                                    <dd>
+                                        <ExternalLink
+                                            href={`https://www.first.org/cvss/calculator/3.0#${vulnerability.cvss_vector}`}
+                                        >
+                                            {vulnerability.cvss_vector}
+                                        </ExternalLink>
+                                    </dd>
+                                </dl>
+                            </div>
+
+                            <div>
+                                <h4>Relations</h4>
+                                <dl>
+                                    <dt>Project</dt>
+                                    <dd>
+                                        {vulnerability.project_id ? (
+                                            <a
+                                                href={`/projects/${vulnerability.project_id}`}
+                                            >
+                                                {vulnerability.project_name}
+                                            </a>
+                                        ) : (
+                                            "-"
+                                        )}
+                                    </dd>
+
+                                    {vulnerability.target_id && (
+                                        <>
+                                            <dt>Affected target</dt>
+                                            <dd>
+                                                <Link
+                                                    to={`/projects/${vulnerability.project_id}/targets/${vulnerability.target_id}`}
+                                                >
+                                                    <TargetBadge
+                                                        target={{
+                                                            id: vulnerability.target_id,
+                                                            name: vulnerability.target_name,
+                                                        }}
+                                                    >
+                                                        {vulnerability.target_id
+                                                            ? `${vulnerability.target_name} (${vulnerability.target_kind})`
+                                                            : "-"}
+                                                    </TargetBadge>
+                                                </Link>
+                                            </dd>
+                                        </>
+                                    )}
+
+                                    <dt>Created by</dt>
+                                    <dd>
+                                        <UserLink
+                                            userId={vulnerability.creator_uid}
+                                        >
+                                            {vulnerability.creator_full_name}
+                                        </UserLink>
+                                    </dd>
+                                </dl>
+
+                                <TimestampsSection entity={vulnerability} />
+                            </div>
+                        </div>
+                    </Tab>
+                    <Tab name="Notes">
+                        <VulnerabilitiesNotesTab
+                            vulnerability={vulnerability}
+                        />
+                    </Tab>
+                    <Tab name="Attachments">
+                        <AttachmentsDropzone
+                            parentType={parentType}
+                            parentId={parentId}
+                            onUploadFinished={reloadAttachments}
+                        />
+
+                        <h4>
+                            <IconDocument />
+                            Attachment list
+                        </h4>
+                        <AttachmentsTable
+                            attachments={attachments}
+                            reloadAttachments={reloadAttachments}
+                        />
+                    </Tab>
+                </Tabs>
+            </article>
         </div>
-        <article>
-            <Title type='Vulnerability' title={vulnerability.summary} icon={<IconFlag />} />
-
-            <Tabs>
-                <Tab name="Details">
-                    <div className="grid grid-two">
-                        <div>
-                            <h4>Description</h4>
-                            <ReactMarkdown>{vulnerability.description || "_(empty)_"}</ReactMarkdown>
-                            {vulnerability.solution &&
-                                <>
-                                    <h4>Solution</h4>
-                                    <ReactMarkdown>{vulnerability.solution}</ReactMarkdown>
-                                </>
-                            }
-
-                            <h4>Proof of concept</h4>
-                            <ReactMarkdown>{vulnerability.proof_of_concept || "_(empty)_"}</ReactMarkdown>
-
-                            <h4>Impact</h4>
-                            <ReactMarkdown>{vulnerability.impact || "_(empty)_"}</ReactMarkdown>
-
-                            <h4>Properties</h4>
-                            <dl>
-                                <dt>Status</dt>
-                                <dd><VulnerabilityStatusBadge vulnerability={vulnerability} /></dd>
-
-                                <dt>Risk</dt>
-                                <dd><RiskBadge risk={vulnerability.risk} /></dd>
-
-                                <dt>Category</dt>
-                                <dd>{vulnerability.category_name || '-'}</dd>
-
-                                <dt><CvssAbbr /> score</dt>
-                                <dd><CvssScore score={vulnerability.cvss_score} /></dd>
-
-                                <dt>CVSS vector</dt>
-                                <dd><ExternalLink
-                                    href={`https://www.first.org/cvss/calculator/3.0#${vulnerability.cvss_vector}`}>{vulnerability.cvss_vector}</ExternalLink>
-                                </dd>
-                            </dl>
-                        </div>
-
-                        <div>
-                            <h4>Relations</h4>
-                            <dl>
-                                <dt>Project</dt>
-                                <dd>{vulnerability.project_id ?
-                                    <a href={`/projects/${vulnerability.project_id}`}>{vulnerability.project_name}</a> : '-'}</dd>
-
-                                {vulnerability.target_id && <>
-                                    <dt>Affected target</dt>
-                                    <dd><Link to={`/projects/${vulnerability.project_id}/targets/${vulnerability.target_id}`}><TargetBadge name={vulnerability.target_name}>{vulnerability.target_id ? `${vulnerability.target_name} (${vulnerability.target_kind})` : "-"}</TargetBadge></Link></dd>
-                                </>}
-
-                                <dt>Created by</dt>
-                                <dd><UserLink userId={vulnerability.creator_uid}>{vulnerability.creator_full_name}</UserLink></dd>
-                            </dl>
-
-                            <TimestampsSection entity={vulnerability} />
-                        </div>
-                    </div>
-                </Tab>
-                <Tab name="Notes"><VulnerabilitiesNotesTab vulnerability={vulnerability} /></Tab>
-                <Tab name="Attachments">
-                    <AttachmentsDropzone parentType={parentType} parentId={parentId} onUploadFinished={reloadAttachments} />
-
-                    <h4><IconDocument />Attachment list</h4>
-                    <AttachmentsTable attachments={attachments} reloadAttachments={reloadAttachments} />
-                </Tab>
-            </Tabs>
-        </article>
-
-    </div>
+    );
 }
 
 export default VulnerabilityDetails;

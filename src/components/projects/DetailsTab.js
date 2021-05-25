@@ -1,4 +1,4 @@
-import { Badge, Box, Divider, Flex, HStack, Text, Wrap } from "@chakra-ui/layout";
+import { Badge, Box, Divider, Grid, HStack, Text  } from "@chakra-ui/layout";
 import { Table, Tbody, Td, Th, Tr } from "@chakra-ui/table";
 import ClientLink from "components/clients/Link";
 import UserLink from "components/users/Link";
@@ -8,10 +8,8 @@ import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 
 function ProjectDetailsTab({ project }) {
     return (
-        <Flex justifyContent="flex-start" >
-            <Wrap>
+        <Grid templateColumns={['1fr', '1fr', '1fr','repeat(2,1fr)']} gap='3'>
             <Box
-                maxW="lg"
                 as="article"
                 borderWidth="1px"
                 borderRadius="lg"
@@ -61,7 +59,7 @@ function ProjectDetailsTab({ project }) {
                 </Table>
             </Box>
 
-            <Box ml="5" maxW="lg" as="article" borderWidth="1px" borderRadius="lg" overflow="hidden" p="5" >
+            <Box as="article" borderWidth="1px" borderRadius="lg" overflow="hidden" p="5" >
                 <HStack mb="4">
                     <Text fontSize="xl" fontWeight="bold">
                         Relations
@@ -95,14 +93,7 @@ function ProjectDetailsTab({ project }) {
 
                         <Tr>
                             {project.update_ts && (
-                                <>
-                                    <Th>Updated</Th>
-                                    <Td>
-                                        <ReactTimeAgo
-                                            date={project.update_ts}
-                                        />
-                                    </Td>
-                                </>
+                                <> <Th>Updated</Th> <Td> <ReactTimeAgo date={project.update_ts} /> </Td> </>
                             )}
                         </Tr>
 
@@ -112,26 +103,14 @@ function ProjectDetailsTab({ project }) {
                                 {project.engagement_start_date && (
                                     <>
                                         <Th>Engagement start date</Th>
-                                        <Td>
-                                            <ReactTimeAgo
-                                                date={
-                                                    project.engagement_start_date
-                                                }
-                                            />
-                                        </Td>
+                                        <Td> <ReactTimeAgo date={ project.engagement_start_date } /> </Td>
                                     </>
                                 )}
 
                                 {project.engagement_end_date && (
                                     <>
                                         <Th>Engagement end date</Th>
-                                        <Td>
-                                            <ReactTimeAgo
-                                                date={
-                                                    project.engagement_end_date
-                                                }
-                                            />
-                                        </Td>
+                                        <Td> <ReactTimeAgo date={ project.engagement_end_date } /> </Td>
                                     </>
                                 )}
                             </Tr>
@@ -148,8 +127,7 @@ function ProjectDetailsTab({ project }) {
                     </Tbody>
                 </Table>
             </Box>
-            </Wrap>
-        </Flex>
+        </Grid>
     );
 }
 

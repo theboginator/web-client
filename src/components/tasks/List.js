@@ -79,7 +79,9 @@ const TasksList = ({ history }) => {
 
     return (
         <>
-            <HStack justifyContent="flex-end" alignItems="center">
+            <HStack justifyContent="space-between" alignItems="center">
+            <Title title="Tasks" icon={<IconClipboardList />} />
+
                 <HStack spacing="5" alignItems="flex-end">
                     <RestrictedComponent roles={["administrator"]}>
                         {selectedTasks.length > 0 && (
@@ -154,7 +156,6 @@ const TasksList = ({ history }) => {
                     </FormControl>
                 </HStack>
             </HStack>
-            <Title title="Tasks" icon={<IconClipboardList />} />
 
             {!tasks ? (
                 <Center>

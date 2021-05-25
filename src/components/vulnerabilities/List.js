@@ -83,6 +83,8 @@ const VulnerabilitiesList = ({ history }) => {
     return (
         <>
             <HStack justifyContent='space-between' alignItems='center'>
+            <Title title='Vulnerabilities' icon={<IconFlag />} />
+
                 <Pagination page={apiPageNumber} total={numberPages} handlePrev={handlePrev} handleNext={handleNext} />
                 <HStack spacing='3'>
                 {selection.length > 0 &&
@@ -96,7 +98,6 @@ const VulnerabilitiesList = ({ history }) => {
                 </HStack>
 
             </HStack>
-            <Title title='Vulnerabilities' icon={<IconFlag />} />
             {!vulnerabilities ? <Center><Spinner /></Center> :
                 <VulnerabilitiesTable vulnerabilities={vulnerabilities} selection={selection} setSelection={setSelection} destroy={destroy} />
             }

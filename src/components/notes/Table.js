@@ -1,3 +1,4 @@
+import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import RestrictedComponent from "components/logic/RestrictedComponent";
 import React from "react";
 import ReactMarkdown from "react-markdown";
@@ -5,33 +6,33 @@ import DeleteButton from "../ui/buttons/Delete";
 import NoResultsTableRow from "../ui/NoResultsTableRow";
 
 const NotesTable = ({ notes, onDeleteButtonClick }) => {
-    return <table>
-        <thead>
-            <tr>
-                <th style={{ width: '200px' }}>Creation time</th>
-                <th style={{ width: '140px' }}>Author</th>
-                <th style={{ width: '140px' }}>Visibility</th>
-                <th>Content</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
+    return <Table>
+        <Thead>
+            <Tr>
+                <Th style={{ width: '200px' }}>Creation time</Th>
+                <Th style={{ width: '140px' }}>Author</Th>
+                <Th style={{ width: '140px' }}>Visibility</Th>
+                <Th>Content</Th>
+                <Th>&nbsp;</Th>
+            </Tr>
+        </Thead>
+        <Tbody>
             {notes.length === 0 && <NoResultsTableRow numColumns={5} />}
             {notes.map((note, index) =>
-                <tr>
-                    <td>{note.insert_ts}</td>
-                    <td>{note.user_name}</td>
-                    <td>{note.visibility}</td>
-                    <td><ReactMarkdown>{note.content}</ReactMarkdown></td>
-                    <td>
+                <Tr>
+                    <Td>{note.insert_ts}</Td>
+                    <Td>{note.user_name}</Td>
+                    <Td>{note.visibility}</Td>
+                    <Td><ReactMarkdown>{note.content}</ReactMarkdown></Td>
+                    <Td>
                         <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
                             <DeleteButton onClick={ev => onDeleteButtonClick(ev, note)} />
                         </RestrictedComponent>
-                    </td>
-                </tr>
+                    </Td>
+                </Tr>
             )}
-        </tbody>
-    </table>
+        </Tbody>
+    </Table>
 }
 
 export default NotesTable;
