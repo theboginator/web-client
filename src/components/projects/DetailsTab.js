@@ -1,68 +1,156 @@
-import ClientLink from 'components/clients/Link'
-import TimestampsSection from 'components/ui/TimestampsSection'
-import UserLink from 'components/users/Link'
-import React from 'react'
-import ReactMarkdown from 'react-markdown'
-import ReactTimeAgo from 'react-time-ago/commonjs/ReactTimeAgo'
-import { IconDocument } from '../ui/Icons'
+import { Badge, Box, Divider, Flex, HStack, Text, Wrap } from "@chakra-ui/layout";
+import { Table, Tbody, Td, Th, Tr } from "@chakra-ui/table";
+import ClientLink from "components/clients/Link";
+import UserLink from "components/users/Link";
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 
 function ProjectDetailsTab({ project }) {
     return (
-        <section className="grid grid-two">
-            <div>
-                <h4>
-                    <IconDocument /> Project Details
-                </h4>
-                <dl>
-                    <dt>Status</dt>
-                    <dd>{project.archived ? 'Archived' : 'Active'}</dd>
+        <Flex justifyContent="flex-start" >
+            <Wrap>
+            <Box
+                maxW="lg"
+                as="article"
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                p="5"
+            >
+                <HStack mb="4">
+                    <Text fontSize="xl" fontWeight="bold">
+                        Project Details
+                    </Text>
+                </HStack>
+                <Divider />
+                <Table>
+                    <Tbody>
+                        <Tr>
+                            <Th>Status</Th>
+                            <Td>
+                                <HStack alignItems="center">
+                                    <Box rounded="full" w="10px" h="10px" bg={ project.archived ? "gray.600" : "green.400" } mr="1" /> 
+                                    <Text color={ project.archived ? "gray.600" : "green.400" } >
+                                        {project.archived
+                                            ? "Archived"
+                                            : "Active"}{" "}
+                                    </Text>
+                                </HStack>
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <Th>Engagement type</Th>
+                            <Td>
+                                {project.engagement_type && (
+                                    <Badge colorScheme="red">
+                                        {project.engagement_type}
+                                    </Badge>
+                                )}
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <Th>Description</Th>
+                            <Td>
+                                <ReactMarkdown>
+                                    {project.description}
+                                </ReactMarkdown>
+                            </Td>
+                        </Tr>
+                    </Tbody>
+                </Table>
+            </Box>
 
-                    {project.engagement_type && <>
-                        <dt>Engagement type</dt>
-                        <dd>{project.engagement_type}</dd>
-                    </>}
+            <Box ml="5" maxW="lg" as="article" borderWidth="1px" borderRadius="lg" overflow="hidden" p="5" >
+                <HStack mb="4">
+                    <Text fontSize="xl" fontWeight="bold">
+                        Relations
+                    </Text>
+                </HStack>
+                <Divider />
+                <Table>
+                    <Tbody>
+                        <Tr>
+                            <Th>Client</Th>
+                            <Td>
+                                <ClientLink clientId={project.client_id}>
+                                    {project.client_name}
+                                </ClientLink>
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <Th>Created by</Th>
+                            <Td>
+                                <UserLink userId={project.creator_uid}>
+                                    {project.creator_full_name}
+                                </UserLink>
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <Th>Created</Th>
+                            <Td>
+                                <ReactTimeAgo date={project.insert_ts} />
+                            </Td>
+                        </Tr>
 
-                    <dt>Description</dt>
-                    <dd><ReactMarkdown>{project.description}</ReactMarkdown></dd>
-                </dl>
-            </div>
+                        <Tr>
+                            {project.update_ts && (
+                                <>
+                                    <Th>Updated</Th>
+                                    <Td>
+                                        <ReactTimeAgo
+                                            date={project.update_ts}
+                                        />
+                                    </Td>
+                                </>
+                            )}
+                        </Tr>
 
-            <div>
-                <h4>Relations</h4>
-                <dl>
-                    <dt>Client</dt>
-                    <dd><ClientLink clientId={project.client_id}>{project.client_name}</ClientLink></dd>
+                        {(project.engagement_start_date ||
+                            project.engagement_end_date) && (
+                            <Tr>
+                                {project.engagement_start_date && (
+                                    <>
+                                        <Th>Engagement start date</Th>
+                                        <Td>
+                                            <ReactTimeAgo
+                                                date={
+                                                    project.engagement_start_date
+                                                }
+                                            />
+                                        </Td>
+                                    </>
+                                )}
 
-                    <dt>Created by</dt>
-                    <dd><UserLink userId={project.creator_uid}>{project.creator_full_name}</UserLink></dd>
-                </dl>
+                                {project.engagement_end_date && (
+                                    <>
+                                        <Th>Engagement end date</Th>
+                                        <Td>
+                                            <ReactTimeAgo
+                                                date={
+                                                    project.engagement_end_date
+                                                }
+                                            />
+                                        </Td>
+                                    </>
+                                )}
+                            </Tr>
+                        )}
 
-                <TimestampsSection entity={project} />
-
-                {(project.engagement_start_date || project.engagement_end_date) &&
-                    <dl>
-                        {project.engagement_start_date && <>
-                            <dt>Engagement start date</dt>
-                            <dd><ReactTimeAgo date={project.engagement_start_date} /></dd>
-                        </>}
-
-                        {project.engagement_end_date && <>
-                            <dt>Engagement end date</dt>
-                            <dd><ReactTimeAgo date={project.engagement_end_date} /></dd>
-                        </>}
-                    </dl>
-                }
-
-                {project.archived === 1 &&
-                    <dl>
-                        <dt>Archived</dt>
-                        <dd><ReactTimeAgo date={project.archive_ts} /></dd>
-                    </dl>
-                }
-
-            </div>
-        </section>
-    )
+                        {project.archived === 1 && (
+                            <Tr>
+                                <Th>Archived</Th>
+                                <Td>
+                                    <ReactTimeAgo date={project.archive_ts} />
+                                </Td>
+                            </Tr>
+                        )}
+                    </Tbody>
+                </Table>
+            </Box>
+            </Wrap>
+        </Flex>
+    );
 }
 
-export default ProjectDetailsTab
+export default ProjectDetailsTab;

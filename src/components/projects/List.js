@@ -1,5 +1,5 @@
 import { Button, IconButton, ButtonGroup } from '@chakra-ui/button';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Box, Center, HStack, LinkOverlay, Text } from "@chakra-ui/layout";
 import { Spinner } from '@chakra-ui/spinner';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
@@ -9,8 +9,6 @@ import useDelete from '../../hooks/useDelete';
 import useFetch from '../../hooks/useFetch';
 import useSetTitle from '../../hooks/useSetTitle';
 import ClientLink from "../clients/Link";
-import Breadcrumb from '../ui/Breadcrumb';
-import CreateButton from '../ui/buttons/Create';
 import { IconFolder } from '../ui/Icons';
 import NoResults from "../ui/NoResults";
 import Title from '../ui/Title';
@@ -28,17 +26,13 @@ const ProjectsList = ({ history }) => {
     return (
         <div>
             <HStack justifyContent="space-between" alignItems="center">
-                <Breadcrumb />
-                <RestrictedComponent
-                    roles={["administrator", "superuser", "user"]}
-                >
-                    <CreateButton onClick={handleCreateProject}>
-                        {" "}
+            <Title title="Projects" icon={<IconFolder />} />
+                <RestrictedComponent roles={["administrator", "superuser", "user"]} >
+                    <Button variant='outline' leftIcon={<AddIcon />} onClick={handleCreateProject} colorScheme='red'>
                         Create Project
-                    </CreateButton>
+                    </Button>
                 </RestrictedComponent>
             </HStack>
-            <Title title="Projects" icon={<IconFolder />} />
             {!projects ? (
                 <Center>
                     <Spinner />
@@ -69,9 +63,7 @@ const ProjectsList = ({ history }) => {
                                         <ProjectBadge project={project} />
                                     </Td>
                                     <Td>
-                                        <ClientLink
-                                            clientId={project.client_id}
-                                        >
+                                        <ClientLink clientId={project.client_id} >
                                             {project.client_name}
                                         </ClientLink>
                                     </Td>
@@ -85,28 +77,10 @@ const ProjectsList = ({ history }) => {
                                     </Td>
                                     <Td fontSize="sm">
                                         <HStack alignItems="center">
-                                            <Box
-                                                rounded="full"
-                                                w="10px"
-                                                h="10px"
-                                                bg={
-                                                    project.archived
-                                                        ? "gray.600"
-                                                        : "green.400"
-                                                }
-                                                mr="1"
-                                            />
-                                            <Text
-                                                color={
-                                                    project.archived
-                                                        ? "gray.600"
-                                                        : "green.400"
-                                                }
-                                            >
-                                                {project.archived
-                                                    ? "Archived"
-                                                    : "Active"}
-                                            </Text>
+                                            <Box rounded="full" w="10px" h="10px" bg={ project.archived ? "gray.600" : "green.400" } mr="1" />
+                                            
+                                            <Text color={ project.archived ? "gray.600" : "green.400" } >
+                                                {project.archived ? "Archived" : "Active"} </Text>
                                         </HStack>
                                     </Td>
                                     <Td className="flex justify-end">
@@ -122,7 +96,7 @@ const ProjectsList = ({ history }) => {
                                                 isAttached
                                                 variant="outline"
                                             >
-                                                <Button mr="-px">
+                                                <Button mr="-px" colorScheme='yellow'>
                                                     <LinkOverlay
                                                         href={`/projects/${project.id}/edit`}
                                                     >
@@ -130,6 +104,7 @@ const ProjectsList = ({ history }) => {
                                                     </LinkOverlay>
                                                 </Button>
                                                 <IconButton
+                                                colorScheme='red'
                                                     aria-label="Delete"
                                                     icon={<DeleteIcon />}
                                                     onClick={() =>

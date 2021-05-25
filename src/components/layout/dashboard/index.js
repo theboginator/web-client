@@ -11,9 +11,16 @@ function Dashboard({ children }) {
     return (
         <>
             <Header />
-            <Grid className={sidebarCollapsed ? 'collapsed' : ''} templateColumns="max-content 1fr" gap={6}>
-                <Sidebar sidebarCollapsed={sidebarCollapsed} setSidebarCollapsed={setSidebarCollapsed} />
-                <Box flex='1'>
+            <Grid
+                className={sidebarCollapsed ? "collapsed" : ""}
+                templateColumns="max-content 1fr"
+                gap={6}
+            >
+                <Sidebar
+                    sidebarCollapsed={sidebarCollapsed}
+                    setSidebarCollapsed={setSidebarCollapsed}
+                />
+                <Box flex="1" p="5">
                     {children || <DashboardPanels />}
                 </Box>
             </Grid>

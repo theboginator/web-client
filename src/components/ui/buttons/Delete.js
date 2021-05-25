@@ -2,9 +2,9 @@ import { Button } from "@chakra-ui/button";
 import { Box } from "@chakra-ui/layout";
 import { IconX } from "../Icons";
 
-const DeleteButton = (props) => <Button size='xs' variant='outline' onClick={props.onClick} {...props} color='red.400' >
+const DeleteButton = ({onClick, size='sm', children}) => <Button colorScheme='red' size={size} variant='outline' onClick={onClick} color='red.400' >
     <Box w='16px' h='16px' mr='1'><IconX /></Box>
-    {props.children || "Delete"}
+    {children || "Delete"}
 </Button>
 
 

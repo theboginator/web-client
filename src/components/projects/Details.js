@@ -1,3 +1,9 @@
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/breadcrumb";
+import { Button, ButtonGroup } from "@chakra-ui/button";
+import { ChevronRightIcon } from "@chakra-ui/icons";
+import { Box, Flex } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/spinner";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/tabs";
 import RestrictedComponent from "components/logic/RestrictedComponent";
 import { actionCompletedToast } from "components/ui/toast";
 import { Link } from "react-router-dom";
@@ -5,15 +11,8 @@ import secureApiFetch from "services/api";
 import useDelete from '../../hooks/useDelete';
 import useFetch from '../../hooks/useFetch';
 import useSetTitle from '../../hooks/useSetTitle';
-import Breadcrumb from '../ui/Breadcrumb';
-import ButtonGroup from "../ui/buttons/ButtonGroup";
 import DeleteButton from "../ui/buttons/Delete";
-import LinkButton from "../ui/buttons/Link";
-import SecondaryButton from '../ui/buttons/Secondary';
 import { IconClipboardCheck, IconFolder, IconUserGroup } from '../ui/Icons';
-import Loading from '../ui/Loading';
-import Tab from "../ui/Tab";
-import Tabs from "../ui/Tabs";
 import Title from '../ui/Title';
 import ProjectAttachmentsTab from './AttachmentsTab';
 import ProjectDetailsTab from './DetailsTab';
@@ -54,43 +53,62 @@ const ProjectDetails = ({ match, history }) => {
 
     return (
         <>
-            <div className='heading'>
-                <Breadcrumb>
-                    <Link to="/projects">Projects</Link>
-                </Breadcrumb>
+            <Flex alignItems='center' justifyContent='space-between'>
+                <Box px='3' py='2' border='1px' borderColor='gray.700' rounded='lg' display='inline-block'>
+                    <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />}>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink as={Link} to="/">
+                            Home
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink as={Link} to="/projects">
+                            Projects
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                </Box>
+
                 {project && <>
                     <ProjectTeam project={project} users={users} />
 
-                    <ButtonGroup>
+                    <ButtonGroup size='md' isAttached variant="outline">
                         <RestrictedComponent roles={['administrator', 'superuser', 'user']}>
                             {!project.archived && <>
-                                <LinkButton href={`/projects/${project.id}/edit`}>Edit</LinkButton>
-                                <SecondaryButton onClick={handleGenerateReport}>
-                                    <IconClipboardCheck />
-                            Generate Report
-                        </SecondaryButton>
-                                <SecondaryButton onClick={handleManageTeam}>
-                                    <IconUserGroup />
-                            Manage Members
-                        </SecondaryButton>
+                                <Button colorScheme='yellow' mr='3' as={Link} to={`/projects/${project.id}/edit`}>Edit</Button>
+                                <Button leftIcon={<IconClipboardCheck styling={{ width: '16px', height: '16px'}}/>} onClick={handleGenerateReport}>
+                                    Generate Report
+                                </Button>
+                                <Button leftIcon={<IconUserGroup styling={{ width: '16px', height: '16px'}}/>} onClick={handleManageTeam}>
+                                    Manage Members
+                                </Button>
                             </>}
-                            <SecondaryButton onClick={() => onArchiveButtonClick(project)}>{project.archived ? 'Unarchive' : 'Archive'}</SecondaryButton>
-                            <DeleteButton onClick={() => destroy(project.id)} />
+                            <Button onClick={() => onArchiveButtonClick(project)}>{project.archived ? 'Unarchive' : 'Archive'}</Button>
+                            <DeleteButton size='md' onClick={() => destroy(project.id)} />
                         </RestrictedComponent>
                     </ButtonGroup>
                 </>}
-            </div>
-            {!project ? <Loading /> :
+            </Flex>
+            {!project ? <Spinner /> :
                 <>
                     <Title title={project.name} type="Project" icon={<IconFolder />} />
-
-                    <Tabs>
-                        <Tab name="Details"><ProjectDetailsTab project={project} /></Tab>
-                        <Tab name="Targets"><ProjectTargets project={project} /></Tab>
-                        <Tab name="Tasks"><ProjectTasks project={project} /></Tab>
-                        <Tab name="Vulnerabilities"><ProjectVulnerabilities project={project} /></Tab>
-                        <Tab name="Notes"><ProjectNotesTab project={project} /></Tab>
-                        <Tab name="Attachments"><ProjectAttachmentsTab project={project} /></Tab>
+                    <Tabs colorScheme='red'>
+                        <TabList>
+                            <Tab>Details</Tab>
+                            <Tab>Targets</Tab>
+                            <Tab>Tasks</Tab>
+                            <Tab>Vulnerabilities</Tab>
+                            <Tab>Notes</Tab>
+                            <Tab>Attachments</Tab>
+                        </TabList>
+                        <TabPanels>
+                            <TabPanel><ProjectDetailsTab project={project} /></TabPanel>
+                            <TabPanel><ProjectTargets project={project} /></TabPanel>
+                            <TabPanel><ProjectTasks project={project} /></TabPanel>
+                            <TabPanel><ProjectVulnerabilities project={project} /></TabPanel>
+                            <TabPanel><ProjectNotesTab project={project} /></TabPanel>
+                            <TabPanel><ProjectAttachmentsTab project={project} /></TabPanel>
+                        </TabPanels>
                     </Tabs>
                 </>
             }

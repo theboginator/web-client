@@ -1,5 +1,6 @@
+import { Avatar, AvatarGroup } from '@chakra-ui/avatar'
 import {useHistory} from 'react-router-dom'
-import UserAvatar from './../badges/UserAvatar'
+import MD5 from 'services/md5'
 
 const ProjectTeam = ({project, users}) => {
     const history = useHistory()
@@ -8,16 +9,18 @@ const ProjectTeam = ({project, users}) => {
     }
 
     return (
-        <div className='flex px-2 py-2 -space-x-2 mr-auto ml-3 '>
+        <AvatarGroup size="md" max={4}>
             {users && users.map((user, index) =>
-                <UserAvatar
+                <Avatar
                     key={index}
+                    bgColor='gray.700'
+                    src={`https://www.gravatar.com/avatar/${MD5(user.email)}?s=200&d=robohash`}
                     email={user.email}
                     onClick={() => handleOnClick(user.id)}
                     name={user.name}
-                    tooltip/>
+                    />
             )}
-        </div>
+        </AvatarGroup>
     )
 }
 

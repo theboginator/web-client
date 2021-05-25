@@ -1,6 +1,10 @@
+import { Button, IconButton } from '@chakra-ui/button';
+import { FormControl, FormLabel } from '@chakra-ui/form-control';
+import { AddIcon, RepeatIcon } from '@chakra-ui/icons';
+import { HStack } from '@chakra-ui/layout';
+import { Select } from '@chakra-ui/select';
 import RestrictedComponent from 'components/logic/RestrictedComponent';
 import DeleteButton from 'components/ui/buttons/Delete';
-import ReloadButton from 'components/ui/buttons/Reload';
 import { actionCompletedToast } from 'components/ui/toast';
 import React, { useState } from 'react';
 import secureApiFetch from 'services/api';
@@ -8,9 +12,6 @@ import useDelete from '../../hooks/useDelete';
 import useFetch from '../../hooks/useFetch';
 import useSetTitle from '../../hooks/useSetTitle';
 import TaskStatuses from "../../models/TaskStatuses";
-import Breadcrumb from '../ui/Breadcrumb';
-import ButtonGroup from "../ui/buttons/ButtonGroup";
-import CreateButton from "../ui/buttons/Create";
 import { IconClipboardList } from '../ui/Icons';
 import Loading from '../ui/Loading';
 import Title from '../ui/Title';
@@ -77,41 +78,50 @@ const TasksList = ({ history }) => {
     const destroy = useDelete('/tasks/', reloadTasks);
 
     return <>
-        <div className='heading'>
-            <Breadcrumb />
-            <ButtonGroup>
-                <div>
-                    <label>Project</label>
-                    <select onChange={handleSetProject}>
-                        <option value="">Any</option>
-                        {projects && projects.map(project => <option value={project.id}
-                            key={project.id}>{project.name}</option>)}
-                    </select>
-                </div>
-                <div>
-                    <label>Status</label>
-                    <select onChange={handleSetStatus}>
-                        <option value="">(any)</option>
-                        {TaskStatuses.map((status, index) => <option value={status.id}>{status.name}</option>)}
-                    </select>
-                </div>
-                <CreateButton onClick={handleCreateTask}>Create task</CreateButton>
-                <label>Transition to&nbsp;
-                    <select disabled={!selectedTasks.length} onChange={onStatusSelectChange}>
-                        <option value="">(select)</option>
-                        {TaskStatuses.map((status, index) =>
-                            <option key={index} value={status.id}>{status.name}</option>
-                        )}
-                    </select>
-                </label>
-                <RestrictedComponent roles={['administrator']}>
-                    <DeleteButton onClick={onDeleteButtonClick} disabled={!selectedTasks.length}>
+        <HStack justifyContent="flex-end" alignItems="center">
+            <HStack spacing='5' alignItems='flex-end'>
+
+            <RestrictedComponent roles={['administrator']}>
+                { selectedTasks.length > 0 && 
+                <FormControl>
+
+                    <DeleteButton size='md' onClick={onDeleteButtonClick} disabled={!selectedTasks.length}>
                         Delete selected
                     </DeleteButton>
+                </FormControl>}
+
                 </RestrictedComponent>
-                <ReloadButton onClick={async () => { setReloadButtonDisabled(true); await reloadTasks(); setReloadButtonDisabled(false); }} disabled={reloadButtonDisabled} />
-            </ButtonGroup>
-        </div>
+                <FormControl>
+                    <FormLabel color='gray.500'>Project</FormLabel>
+                    <Select onChange={handleSetProject} placeholder='Any'>
+                        {projects && projects.map(project => <option value={project.id}
+                            key={project.id}>{project.name}</option>)}
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <FormLabel color='gray.500'>Status</FormLabel>
+                    <Select onChange={handleSetStatus} placeholder='Any'>
+                        {TaskStatuses.map((status, index) => <option value={status.id}>{status.name}</option>)}
+                    </Select>
+                </FormControl>
+            
+                <FormControl>
+
+                    <FormLabel color='gray.500'>Transition to&nbsp;</FormLabel>
+
+                        <Select disabled={!selectedTasks.length} onChange={onStatusSelectChange} placeholder='Any'>
+                            {TaskStatuses.map((status, index) =>
+                                <option key={index} value={status.id}>{status.name}</option>
+                            )}
+                        </Select>
+                </FormControl>
+
+                <IconButton variant='outline' icon={<RepeatIcon />} onClick={async () => { setReloadButtonDisabled(true); await reloadTasks(); setReloadButtonDisabled(false); }} disabled={reloadButtonDisabled} />
+                <FormControl>
+                    <Button colorScheme='orange' variant='outline' leftIcon={<AddIcon />} onClick={handleCreateTask}>Create task</Button>
+                </FormControl>
+            </HStack>
+        </HStack>
         <Title title='Tasks' icon={<IconClipboardList />} />
 
         {!tasks ?
