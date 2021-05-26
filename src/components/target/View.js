@@ -1,10 +1,10 @@
+import { Badge } from '@chakra-ui/layout';
 import RestrictedComponent from 'components/logic/RestrictedComponent';
 import TimestampsSection from 'components/ui/TimestampsSection';
 import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import useDelete from '../../hooks/useDelete';
 import useFetch from '../../hooks/useFetch';
-import Badge from "../badges/Badge";
 import Breadcrumb from "../ui/Breadcrumb";
 import DeleteButton from '../ui/buttons/Delete';
 import Loading from '../ui/Loading';
@@ -50,7 +50,7 @@ const TargetView = ({ match, history }) => {
                 <div className="grid grid-two">
                     <div>
                         <h4>Kind</h4>
-                        <Badge color={target.kind === 'hostname' ? 'green' : 'blue'}>{target.kind}</Badge>
+                        <Badge colorScheme={target.kind === 'hostname' ? 'green' : 'blue'}>{target.kind}</Badge>
                     </div>
 
                     <div>

@@ -1,13 +1,16 @@
-import { CheckIcon } from '@chakra-ui/icons';
-import {Flex, HStack, Text } from '@chakra-ui/layout';
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
+import { Text } from '@chakra-ui/layout';
+import { Tag } from '@chakra-ui/tag';
 
-const TaskStatusFormatter = ({task}) => {
-    return <HStack spacing='2' alignItems='center' >
-            <Flex rounded='full' w='22px' h='22px' bg='gray.900' alignItems='center' justifyContent='center'>{task.status === 'done' ? <CheckIcon fontSize='12px' /> : ''}</Flex>
-            <Text fontSize='sm' fontWeight='medium' color='gray.500' textTransform='capitalize'>
-            {task.status}
-            </Text>
-        </HStack>
-}
+const TaskStatusFormatter = ({ task }) => {
+  return (
+    <Tag colorScheme={task.status === 'done' ? 'green' : 'gray'}>
+      {task.status === 'done' ? <CheckIcon fontSize="12px" /> : <CloseIcon fontSize="10px" />}
+      <Text fontSize="sm" ml="1.5" fontWeight="medium" textTransform="capitalize">
+        {task.status}
+      </Text>
+    </Tag>
+  );
+};
 
 export default TaskStatusFormatter;

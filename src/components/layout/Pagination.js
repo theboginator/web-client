@@ -1,8 +1,8 @@
-import {IconLeft, IconRight} from '../ui/Icons'
-import SecondaryButton from './../ui/buttons/Secondary'
 import isInputElement from "../../utilities/domUtils";
 import {useCallback, useEffect} from 'react';
-import './Pagination.scss'
+import { Button, ButtonGroup, IconButton } from '@chakra-ui/button';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Text } from "@chakra-ui/layout";
 
 const Pagination = ({page, total, handleNext, handlePrev}) => {
     const previousEnabled = page + 1 > 1;
@@ -29,11 +29,11 @@ const Pagination = ({page, total, handleNext, handlePrev}) => {
         };
     }, [onKeyDownListener]);
 
-    return <div className='pagination'>
-        <SecondaryButton tooltip='Previous [P]' disabled={!previousEnabled} onClick={handlePrev}><IconLeft/></SecondaryButton>
-        <label>{page + 1} <span className='opacity-25'>|</span> {total} </label>
-        <SecondaryButton tooltip='Next [N]' disabled={!nextEnabled} onClick={handleNext}><IconRight/></SecondaryButton>
-    </div>
+    return <ButtonGroup  isAttached variant="outline" isAttached colorScheme='gray'>
+                <IconButton disabled={!previousEnabled} onClick={handlePrev} aria-label="Add to friends" icon={<ChevronLeftIcon />} />
+                <Button disabled variant='outline'>{page + 1} <Text mx='5px' > of </Text> {total} </Button>
+                <IconButton disabled={!nextEnabled} onClick={handleNext} aria-label="Add to friends" icon={<ChevronRightIcon />} />
+            </ButtonGroup>
 }
 
 export default Pagination

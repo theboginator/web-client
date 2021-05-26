@@ -1,7 +1,9 @@
-import DeleteButton from "components/ui/buttons/Delete";
-import SecondaryButton from "components/ui/buttons/Secondary";
+import { Button, ButtonGroup, IconButton } from "@chakra-ui/button";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { HStack, Text, VStack } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/spinner";
+import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import FileSizeSpan from "components/ui/FileSizeSpan";
-import Loading from "components/ui/Loading";
 import ModalDialog from "components/ui/ModalDIalog";
 import NoResultsTableRow from "components/ui/NoResultsTableRow";
 import { resolveMime } from 'friendly-mimes';
@@ -68,7 +70,7 @@ const AttachmentsTable = ({ attachments, reloadAttachments }) => {
     }
 
     if (!attachments) {
-        return <Loading />
+        return <Spinner />
     }
 
     return <>
@@ -76,33 +78,45 @@ const AttachmentsTable = ({ attachments, reloadAttachments }) => {
             {content}
         </ModalDialog>
 
-        <table>
-            <thead>
-                <th>Upload date</th>
-                <th>Uploaded by</th>
-                <th>Filename</th>
-                <th>File size</th>
-                <th>Mimetype</th>
-                <th>&nbsp;</th>
-            </thead>
-            <tbody>
+        <Table size='sm'>
+            <Thead>
+                <Th>Filename</Th>
+                <Th>File size</Th>
+                <Th>Uploaded</Th>
+                <Th>Mimetype</Th>
+            </Thead>
+            <Tbody>
                 {attachments.length === 0 && <NoResultsTableRow numColumns={6} />}
                 {attachments.map((attachment, index) =>
-                    <tr key={index}>
-                        <td><ReactTimeAgo date={attachment.insert_ts} /></td>
-                        <td>{attachment.submitter_name}</td>
-                        <td>{attachment.client_file_name}</td>
-                        <td><FileSizeSpan fileSize={attachment.file_size} /></td>
-                        <td><span title={resolveMime(attachment.file_mimetype)['name']}>{attachment.file_mimetype}</span></td>
-                        <td style={{ display: "flex" }}>
-                            <SecondaryButton onClick={ev => onViewClick(ev, attachment.id)}>View</SecondaryButton>
-                            <SecondaryButton onClick={ev => onDownloadClick(ev, attachment.id)}>Download</SecondaryButton>
-                            <DeleteButton onClick={ev => onDeleteAttachmentClick(ev, attachment.id)} />
-                        </td>
-                    </tr>
+                    <Tr key={index}>
+                    
+
+                        <Td>
+                            <VStack alignItems='start'>
+                                <Text fontWeight='bold'>{attachment.client_file_name}</Text>
+                                <Text color='gray.500'  size='xs' title={resolveMime(attachment.file_mimetype)['name']}>{attachment.file_mimetype}</Text>
+                            </VStack>
+                            </Td>
+                        <Td><FileSizeSpan fileSize={attachment.file_size} /></Td>
+                            <Td>
+                        <VStack alignItems='start'>
+                            <Text> {attachment.submitter_name} </Text>
+                            <Text color='gray.500' size='xs'><ReactTimeAgo date={attachment.insert_ts} /></Text>
+                        </VStack>
+                        </Td>
+                        <Td>
+                            <HStack spacing='3'>
+                                <ButtonGroup isAttached size='sm' variant='outline' >
+                                    <Button onClick={ev => onViewClick(ev, attachment.id)}>View</Button>
+                                    <Button onClick={ev => onDownloadClick(ev, attachment.id)}>Download</Button>
+                                </ButtonGroup>
+                                <IconButton size='sm' variant='outline' icon={<DeleteIcon />} colorScheme='red' onClick={ev => onDeleteAttachmentClick(ev, attachment.id)} />
+                            </HStack>
+                        </Td>
+                    </Tr>
                 )}
-            </tbody>
-        </table>
+            </Tbody>
+        </Table>
     </>
 }
 

@@ -2,7 +2,7 @@ import { Box, Heading, HStack, Text, VStack } from "@chakra-ui/layout";
 
 const Title = ({ type, title, icon }) => {
     return (
-        <HStack p="5" spacing="5" alignItems='center'>
+        <HStack py="5" spacing="5" alignItems='center'>
             <Box rounded='full' p='3' color='red.300' w='48px' h='48px' display='flex' alignItems='center' justifyContent='center' bg='gray.900'>{icon && icon}</Box>
             <VStack  spacing='-1' alignItems='start'>
                 {type && (

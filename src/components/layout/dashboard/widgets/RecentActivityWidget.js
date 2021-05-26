@@ -1,6 +1,5 @@
-import { Box, HStack, Text } from "@chakra-ui/layout";
+import { Badge, Box, HStack, Text } from "@chakra-ui/layout";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
-import Badge from "components/badges/Badge";
 import Loading from "components/ui/Loading";
 import UserLink from "components/users/Link";
 import useFetch from "hooks/useFetch";

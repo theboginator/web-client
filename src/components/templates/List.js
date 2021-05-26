@@ -1,10 +1,10 @@
+import { Badge } from '@chakra-ui/layout';
 import ProjectBadge from 'components/projects/ProjectBadge';
 import { Link } from 'react-router-dom';
 import useDelete from '../../hooks/useDelete';
 import useFetch from '../../hooks/useFetch';
 import useSetTitle from '../../hooks/useSetTitle';
 import secureApiFetch from '../../services/api';
-import BadgeOutline from '../badges/BadgeOutline';
 import Breadcrumb from '../ui/Breadcrumb';
 import CreateButton from '../ui/buttons/Create';
 import DeleteButton from "../ui/buttons/Delete";
@@ -68,7 +68,7 @@ const TemplatesList = ({ history }) => {
                                 <tr key={template.id} onClick={() => viewProject(template.id)}>
                                     <td><ProjectBadge project={template} /></td>
                                     <td className='truncate'>{template.description}</td>
-                                    <td><BadgeOutline>{template.num_tasks}</BadgeOutline></td>
+                                    <td><Badge>{template.num_tasks}</Badge></td>
                                     <td className='flex justify-end'>
                                         <PrimaryButton onClick={ev => cloneProject(ev, template.id)} key={template.id}
                                             title="Create project using this template"><IconPlus />Create

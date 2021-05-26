@@ -1,13 +1,11 @@
+import { Button } from '@chakra-ui/button';
+import { FormControl, FormLabel } from '@chakra-ui/form-control';
+import { Select } from '@chakra-ui/select';
 import { getAllTimezones } from 'countries-and-timezones';
-import React, { useContext, useState } from 'react';
-import ThemeContext from "../../contexts/ThemeContext";
+import React, { useState } from 'react';
 import useSetTitle from '../../hooks/useSetTitle';
 import secureApiFetch from '../../services/api';
-import setThemeColors from '../../utilities/setThemeColors';
-import Breadcrumb from '../ui/Breadcrumb';
-import Primary from '../ui/buttons/Primary';
-import SecondaryButton from "../ui/buttons/Secondary";
-import { IconDark, IconLight, IconPreferences, IconSave } from '../ui/Icons';
+import { IconPreferences, IconSave } from '../ui/Icons';
 import Title from '../ui/Title';
 
 const UserPreferences = ({ history }) => {
@@ -16,18 +14,8 @@ const UserPreferences = ({ history }) => {
     const timezones = getAllTimezones();
     const timezoneKeys = Object.keys(timezones).sort();
     const [timezone, setTimezone] = useState(user.timezone);
-    const { theme, setTheme } = useContext(ThemeContext)
 
-    const handleSwitchTheme = () => {
-        setTheme(theme => {
-            setThemeColors(theme)
-            return (theme === 'light') ? 'dark' : 'light'
-        })
-    }
-
-    const handleChange = ev => {
-        setTimezone(ev.target.value);
-    }
+    const handleChange = ev => { setTimezone(ev.target.value); }
 
     const onFormSubmit = ev => {
         ev.preventDefault();
@@ -46,27 +34,18 @@ const UserPreferences = ({ history }) => {
 
     return (
         <>
-            <div className='heading'>
-                <Breadcrumb />
-            </div>
             <Title type='User' title='Preferences' icon={<IconPreferences />} />
             <form onSubmit={onFormSubmit} required>
-                <label>Timezone
-                    <select onChange={handleChange} defaultValue={user.timezone}>
+                <FormControl mb='4'>
+                    <FormLabel>Timezone</FormLabel>
+                    <Select onChange={handleChange} defaultValue={user.timezone}>
                         {timezoneKeys.map((key, index) =>
                             <option key={index} value={timezones[key].name}>{timezones[key].name}</option>
                         )}
-                    </select>
-                </label>
-                <label>Theme
-                    <SecondaryButton onClick={handleSwitchTheme}>
-                        {theme === 'dark' ?
-                            <><IconDark /> Dark</> : <><IconLight /> Light</>
-                        }
-                    </SecondaryButton>
-
-                </label>
-                <Primary type="submit"><IconSave /> Save</Primary>
+                    </Select>
+                </FormControl>
+              
+                <Button  type="submit" leftIcon={<IconSave styling={{ width: '16px'}} />}> Save</Button>
             </form>
         </>
     )

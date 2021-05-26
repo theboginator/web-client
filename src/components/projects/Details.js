@@ -107,14 +107,14 @@ const ProjectDetails = ({ match, history }) => {
                         type="Project"
                         icon={<IconFolder />}
                     />
-                    <Tabs colorScheme="red">
+                    <Tabs colorScheme="red" variant='line'>
                         <TabList>
-                            <Tab>Details</Tab>
-                            <Tab>Targets</Tab>
-                            <Tab>Tasks</Tab>
-                            <Tab>Vulnerabilities</Tab>
-                            <Tab>Notes</Tab>
-                            <Tab>Attachments</Tab>
+                            <Tab roundedTop='md'>Details</Tab>
+                            <Tab roundedTop='md'>Targets</Tab>
+                            <Tab roundedTop='md'>Tasks</Tab>
+                            <Tab roundedTop='md'>Vulnerabilities</Tab>
+                            <Tab roundedTop='md'>Notes</Tab>
+                            <Tab roundedTop='md'>Attachments</Tab>
                         </TabList>
                         <TabPanels>
                             <TabPanel>

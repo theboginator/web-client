@@ -60,7 +60,9 @@ const Login = () => {
                                     <Input focusBorderColor='red.500' type="password" onChange={handlePassword} size='lg'
                                         placeholder="Password" required />
                                 </FormControl>
-                                <Button isDisabled={credentials.username?.length< 3 || credentials.password?.length < 3} size='lg' width='full' colorScheme='red' type="submit">{!loading ? "Sign in" : "Processing..."}</Button>
+                                <Button isLoading={loading} loadingText='Processing' isDisabled={credentials.username?.length< 3 || credentials.password?.length < 3} size='lg' width='full' colorScheme='red' type="submit">
+                                    Sign in
+                                </Button>
                             
                             {error &&
                                 <p className="loginform__error">{error} </p>}
