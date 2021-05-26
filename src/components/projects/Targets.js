@@ -1,5 +1,3 @@
-import { Button } from "@chakra-ui/button";
-import { AddIcon } from "@chakra-ui/icons";
 import { Box, Center, Divider, HStack, Text } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
@@ -11,9 +9,7 @@ import React from "react";
 import useFetch from "../../hooks/useFetch";
 import secureApiFetch from "../../services/api";
 import DeleteButton from "../ui/buttons/Delete";
-import { Link } from 'react-router-dom';
-import { IconPlus, IconServer } from '../ui/Icons';
-import Loading from "../ui/Loading";
+import { IconPlus } from '../ui/Icons';
 import NoResultsTableRow from "../ui/NoResultsTableRow";
 
 const ProjectTargets = ({ project }) => {
@@ -35,16 +31,16 @@ const ProjectTargets = ({ project }) => {
                     Targets
                 </Text>
                 <RestrictedComponent roles={["administrator", "superuser", "user"]} >
-                	<ButtonGroup>
-                    	<LinkButton href={`/targets/add?projectId=${project.id}`}><IconPlus />Add target</LinkButton>
-                    	<LinkButton href={`/targets/add-multiple?projectId=${project.id}`}><IconPlus />Add targets</LinkButton>
-                	</ButtonGroup>
+                    <ButtonGroup>
+                        <LinkButton href={`/targets/add?projectId=${project.id}`}><IconPlus />Add target</LinkButton>
+                        <LinkButton href={`/targets/add-multiple?projectId=${project.id}`}><IconPlus />Add targets</LinkButton>
+                    </ButtonGroup>
                 </RestrictedComponent>
             </HStack>
             <Divider />
-         
+
             {!targets ? (
-                <Center><Spinner /></Center> 
+                <Center><Spinner /></Center>
             ) : (
                 <Table>
                     <Thead>
@@ -62,7 +58,7 @@ const ProjectTargets = ({ project }) => {
                         {targets.map((target, index) => (
                             <Tr key={index}>
                                 <Td>
-                                    <TargetBadge projectId={project.id} target={target} />    
+                                    <TargetBadge projectId={project.id} target={target} />
                                 </Td>
                                 <Td>{target.kind}</Td>
                                 <Td>

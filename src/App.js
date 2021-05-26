@@ -3,7 +3,7 @@ import AuthRoutes from 'components/auth/Routes';
 import CommandsRoutes from 'components/commands/Routes';
 import DocumentsRoutes from 'components/documents/Routes';
 import TargetsRoutes from 'components/target/Routes';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AuditLogList from "./components/auditlog/List";
 import ClientsRoutes from "./components/clients/Routes";
@@ -25,7 +25,7 @@ import UsersRoutes from "./components/users/Routes";
 import VulnerabilitiesRoutes from "./components/vulnerabilities/Routes";
 import Configuration from './Configuration';
 import { AuthProvider } from './contexts/AuthContext';
-import theme from './utilities/theme'
+import theme from './utilities/theme';
 
 const App = () => {
 
