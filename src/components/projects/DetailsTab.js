@@ -4,7 +4,7 @@ import ClientLink from "components/clients/Link";
 import UserLink from "components/users/Link";
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
+import RelativeDateFormatter from 'components/ui/RelativeDateFormatter'
 
 function ProjectDetailsTab({ project }) {
     return (
@@ -87,13 +87,13 @@ function ProjectDetailsTab({ project }) {
                         <Tr>
                             <Th>Created</Th>
                             <Td>
-                                <ReactTimeAgo date={project.insert_ts} />
+                                <RelativeDateFormatter date={project.insert_ts} />
                             </Td>
                         </Tr>
 
                         <Tr>
                             {project.update_ts && (
-                                <> <Th>Updated</Th> <Td> <ReactTimeAgo date={project.update_ts} /> </Td> </>
+                                <> <Th>Updated</Th> <Td> <RelativeDateFormatter date={project.update_ts} /> </Td> </>
                             )}
                         </Tr>
 
@@ -103,14 +103,14 @@ function ProjectDetailsTab({ project }) {
                                 {project.engagement_start_date && (
                                     <>
                                         <Th>Engagement start date</Th>
-                                        <Td> <ReactTimeAgo date={ project.engagement_start_date } /> </Td>
+                                        <Td> <RelativeDateFormatter date={ project.engagement_start_date } /> </Td>
                                     </>
                                 )}
 
                                 {project.engagement_end_date && (
                                     <>
                                         <Th>Engagement end date</Th>
-                                        <Td> <ReactTimeAgo date={ project.engagement_end_date } /> </Td>
+                                        <Td> <RelativeDateFormatter date={ project.engagement_end_date } /> </Td>
                                     </>
                                 )}
                             </Tr>
@@ -120,7 +120,7 @@ function ProjectDetailsTab({ project }) {
                             <Tr>
                                 <Th>Archived</Th>
                                 <Td>
-                                    <ReactTimeAgo date={project.archive_ts} />
+                                    <RelativeDateFormatter date={project.archive_ts} />
                                 </Td>
                             </Tr>
                         )}

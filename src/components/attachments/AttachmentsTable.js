@@ -6,10 +6,10 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import FileSizeSpan from "components/ui/FileSizeSpan";
 import ModalDialog from "components/ui/ModalDIalog";
 import NoResultsTableRow from "components/ui/NoResultsTableRow";
+import RelativeDateFormatter from "components/ui/RelativeDateFormatter";
 import { resolveMime } from 'friendly-mimes';
 import useDelete from "hooks/useDelete";
 import { useState } from "react";
-import ReactTimeAgo from 'react-time-ago';
 import secureApiFetch from "services/api";
 
 const AttachmentsTable = ({ attachments, reloadAttachments }) => {
@@ -101,7 +101,7 @@ const AttachmentsTable = ({ attachments, reloadAttachments }) => {
                             <Td>
                         <VStack alignItems='start'>
                             <Text> {attachment.submitter_name} </Text>
-                            <Text color='gray.500' size='xs'><ReactTimeAgo date={attachment.insert_ts} /></Text>
+                            <Text color='gray.500' size='xs'><RelativeDateFormatter  date={attachment.insert_ts} /></Text>
                         </VStack>
                         </Td>
                         <Td>

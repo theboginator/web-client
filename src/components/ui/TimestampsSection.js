@@ -1,5 +1,5 @@
 import { Table, Td, Tr, Th } from '@chakra-ui/table';
-import ReactTimeAgo from 'react-time-ago/commonjs/ReactTimeAgo';
+import RelativeDateFormatter from "./RelativeDateFormatter";
 
 const TimestampsSection = ({ entity }) => {
   return (
@@ -7,7 +7,7 @@ const TimestampsSection = ({ entity }) => {
       <Tr>
         <Th>Created</Th>
         <Td>
-          <ReactTimeAgo date={entity.insert_ts} />
+          <RelativeDateFormatter date={entity.insert_ts} />
         </Td>
       </Tr>
       <Tr>
@@ -15,7 +15,7 @@ const TimestampsSection = ({ entity }) => {
           <>
             <Th>Updated</Th>
             <Td>
-              <ReactTimeAgo date={entity.update_ts} />
+              <RelativeDateFormatter date={entity.update_ts} />
             </Td>
           </>
         )}
