@@ -5,6 +5,7 @@ import { Spinner } from '@chakra-ui/spinner';
 import RestrictedComponent from 'components/logic/RestrictedComponent';
 import DeleteButton from 'components/ui/buttons/Delete';
 import { actionCompletedToast } from 'components/ui/toast';
+import useQuery from 'hooks/useQuery';
 import React, { useCallback, useEffect, useState } from 'react';
 import useDelete from '../../hooks/useDelete';
 import secureApiFetch from '../../services/api';
@@ -15,8 +16,8 @@ import useSetTitle from './../../hooks/useSetTitle';
 import VulnerabilitiesTable from './VulnerabilitiesTable';
 
 const VulnerabilitiesList = ({ history }) => {
-    const searchParams = new URLSearchParams(history.location.search);
-    let pageNumber = searchParams.get('page');
+    const query = useQuery();
+    let pageNumber = query.get('page');
     pageNumber = pageNumber !== null ? parseInt(pageNumber) : 1;
     const apiPageNumber = pageNumber - 1;
 

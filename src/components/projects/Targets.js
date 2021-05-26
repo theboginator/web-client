@@ -5,21 +5,19 @@ import { Spinner } from "@chakra-ui/spinner";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import RestrictedComponent from "components/logic/RestrictedComponent";
 import TargetBadge from "components/target/TargetBadge";
+import ButtonGroup from "components/ui/buttons/ButtonGroup";
+import LinkButton from "components/ui/buttons/Link";
 import React from "react";
-import {useHistory } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch";
 import secureApiFetch from "../../services/api";
 import DeleteButton from "../ui/buttons/Delete";
+import { Link } from 'react-router-dom';
+import { IconPlus, IconServer } from '../ui/Icons';
+import Loading from "../ui/Loading";
 import NoResultsTableRow from "../ui/NoResultsTableRow";
 
 const ProjectTargets = ({ project }) => {
-    const history = useHistory()
-
     const [targets, updateTargets] = useFetch(`/targets?projectId=${project.id}`)
-
-    const handleAddTarget = () => {
-        history.push(`/projects/${project.id}/targets/create`)
-    }
 
     const onDeleteButtonClick = (ev, targetId) => {
         ev.preventDefault();
@@ -37,9 +35,10 @@ const ProjectTargets = ({ project }) => {
                     Targets
                 </Text>
                 <RestrictedComponent roles={["administrator", "superuser", "user"]} >
-                    <Button onClick={handleAddTarget} leftIcon={<AddIcon />} size='sm' variant='outline'>
-                        Add target
-                    </Button>
+                	<ButtonGroup>
+                    	<LinkButton href={`/targets/add?projectId=${project.id}`}><IconPlus />Add target</LinkButton>
+                    	<LinkButton href={`/targets/add-multiple?projectId=${project.id}`}><IconPlus />Add targets</LinkButton>
+                	</ButtonGroup>
                 </RestrictedComponent>
             </HStack>
             <Divider />

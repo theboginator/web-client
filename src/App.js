@@ -2,7 +2,8 @@ import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import AuthRoutes from 'components/auth/Routes';
 import CommandsRoutes from 'components/commands/Routes';
 import DocumentsRoutes from 'components/documents/Routes';
-import React from 'react';
+import TargetsRoutes from 'components/target/Routes';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AuditLogList from "./components/auditlog/List";
 import ClientsRoutes from "./components/clients/Routes";
@@ -47,6 +48,7 @@ const App = () => {
                                         ...TasksRoutes,
                                         ...ProjectsRoutes,
                                         ...VulnerabilitiesRoutes,
+                                        ...TargetsRoutes,
                                         ...TemplatesRoutes,
                                         ...ReportsRoutes,
                                         ...SystemRoutes,
